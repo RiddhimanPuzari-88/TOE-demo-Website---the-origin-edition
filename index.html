@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Origins Edition – TOE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #5B8BD4;
+            --gold-light: #7BA4E8;
+            --gold-dim: rgba(91, 139, 212, 0.12);
+            --dark: #0a0a0a;
+            --dark2: #111111;
+            --dark3: #1a1a1a;
+            --white: #FFFFFF;
+            --gray: #999999;
+            --gray-light: #cccccc;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 18px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(91, 139, 212, 0.08);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav.scrolled {
+            padding: 12px 28px;
+            background: rgba(10, 10, 10, 0.92);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            height: 34px;
+            width: 34px;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        .nav-logo span {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--gold);
+            letter-spacing: 1.5px;
+        }
+
+        .nav-cta {
+            background: var(--gold);
+            color: var(--dark);
+            padding: 9px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-cta:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(91, 139, 212, 0.25);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(91, 139, 212, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            animation: heroGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, var(--dark), transparent);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(91, 139, 212, 0.2);
+            padding: 8px 22px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--gold);
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 36px;
+            animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-logo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 32px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+            filter: drop-shadow(0 0 40px rgba(91, 139, 212, 0.2));
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(38px, 8vw, 76px);
+            font-weight: 900;
+            line-height: 1.08;
+            margin-bottom: 8px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+        }
+
+        .hero h1 .gold {
+            color: var(--gold);
+            position: relative;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(14px, 2.5vw, 17px);
+            color: var(--gray);
+            max-width: 560px;
+            line-height: 1.8;
+            margin: 28px auto 44px;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--dark);
+            padding: 14px 34px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(91, 139, 212, 0.25);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--gray-light);
+            padding: 14px 34px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(91, 139, 212, 0.3);
+            color: var(--gold);
+            background: rgba(91, 139, 212, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* ===== SHARED SECTION STYLES ===== */
+        .section-label {
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 42px);
+            font-weight: 800;
+            margin-bottom: 18px;
+            line-height: 1.15;
+        }
+
+        .section-desc {
+            color: var(--gray);
+            max-width: 540px;
+            margin: 0 auto 56px;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        /* ===== BENEFITS ===== */
+        .benefits-section {
+            padding: 100px 24px;
+            text-align: center;
+            background: var(--dark2);
+            position: relative;
+        }
+
+        .benefits-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.2), transparent);
+        }
+
+        .benefits-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .benefit-pill {
+            background: rgba(91, 139, 212, 0.08);
+            border: 1px solid rgba(91, 139, 212, 0.18);
+            border-radius: 50px;
+            padding: 14px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+
+        .benefit-pill:hover {
+            background: rgba(91, 139, 212, 0.15);
+            border-color: rgba(91, 139, 212, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(91, 139, 212, 0.12);
+        }
+
+        .benefit-pill span {
+            color: var(--gold);
+            margin-right: 6px;
+            font-size: 13px;
+        }
+
+        /* ===== POSTS ===== */
+        .posts-section {
+            padding: 100px 24px;
+            text-align: center;
+            background: var(--dark);
+            position: relative;
+        }
+
+        .posts-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.15), transparent);
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .post-card {
+            background: var(--dark2);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .post-card:hover {
+            border-color: rgba(91, 139, 212, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--dark3), var(--dark4));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, var(--dark2), transparent);
+            z-index: 0;
+        }
+
+        .post-image img {
+            position: relative;
+            z-index: 0;
+        }
+
+        .post-tag {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(91, 139, 212, 0.15);
+            color: var(--gold);
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .post-content {
+            padding: 28px;
+            text-align: left;
+        }
+
+        .post-date {
+            color: var(--gray);
+            font-size: 12px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .post-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            line-height: 1.35;
+        }
+
+        .post-card p {
+            color: var(--gray);
+            font-size: 13.5px;
+            line-height: 1.7;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--gold);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            gap: 10px;
+        }
+
+        .post-collapsible {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .post-collapsible.expanded {
+            max-height: 3000px;
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            padding: 100px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: var(--dark2);
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(91, 139, 212, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+            animation: ctaGlow 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes ctaGlow {
+            0% { transform: translate(-50%, -50%) scale(0.9); }
+            100% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.15), transparent);
+        }
+
+        .cta-price {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 28px 0 36px;
+        }
+
+        .price-old {
+            font-size: 24px;
+            color: var(--gray);
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .price-free {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 900;
+            color: var(--gold);
+        }
+
+        .cta-details {
+            color: var(--gray);
+            font-size: 14.5px;
+            max-width: 480px;
+            margin: 0 auto 40px;
+            line-height: 1.85;
+        }
+
+        .cta-details strong {
+            color: var(--white);
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #25D366;
+            color: var(--white);
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 24px rgba(37, 211, 102, 0.2);
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 36px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .limited-text {
+            margin-top: 22px;
+            color: var(--gray);
+            font-size: 12px;
+            letter-spacing: 1.5px;
+        }
+
+        /* ===== FOUNDER ===== */
+        .founder-section {
+            padding: 80px 24px;
+            background: var(--dark);
+            position: relative;
+        }
+
+        .founder-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.15), transparent);
+        }
+
+        .founder-container {
+            max-width: 960px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .founder-photo-wrapper {
+            position: relative;
+        }
+
+        .founder-photo {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 16px;
+            border: 1px solid rgba(91, 139, 212, 0.12);
+            transition: all 0.5s ease;
+        }
+
+        .founder-photo-wrapper:hover .founder-photo {
+            border-color: rgba(91, 139, 212, 0.25);
+        }
+
+        .founder-photo-wrapper::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid var(--gold);
+            border-radius: 16px;
+            opacity: 0.1;
+            z-index: -1;
+            transition: opacity 0.5s ease;
+        }
+
+        .founder-photo-wrapper:hover::after {
+            opacity: 0.2;
+        }
+
+        .founder-info h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 38px);
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .founder-info .role {
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+        }
+
+        .founder-info p {
+            color: var(--gray-light);
+            line-height: 1.85;
+            font-size: 14.5px;
+            margin-bottom: 14px;
+        }
+
+        .founder-quote {
+            margin-top: 24px;
+            padding: 20px 24px;
+            border-left: 2px solid var(--gold);
+            background: var(--gold-dim);
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+            color: var(--gray-light);
+            font-size: 14.5px;
+            line-height: 1.75;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 60px 24px 30px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            background: var(--dark2);
+        }
+
+        .footer-logo {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+            margin-bottom: 14px;
+            border-radius: 50%;
+        }
+
+        .footer-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .footer-role {
+            color: var(--gray);
+            font-size: 12px;
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 28px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--gold);
+        }
+
+        .footer-copy {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(35px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .founder-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 32px;
+            }
+
+            .founder-photo-wrapper {
+                max-width: 260px;
+                margin: 0 auto;
+            }
+
+            .founder-quote {
+                text-align: left;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+                max-width: 480px;
+            }
+
+            .posts-grid .post-card[style*="grid-column"] {
+                grid-column: 1 !important;
+            }
+
+            .cta-price {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .benefit-pill {
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+
+            nav {
+                padding: 14px 18px;
+            }
+
+            .nav-logo span {
+                font-size: 12px;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(91, 139, 212, 0.2);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(91, 139, 212, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+            <img src="TOE LOGO.png" alt="TOE Logo">
+            <span>THE ORIGINS EDITION</span>
+        </a>
+        <a href="#join" class="nav-cta">Join FREE</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="hero-badge">&#9733; INVITE-ONLY FOUNDERS COMMUNITY</div>
+        <img src="TOE LOGO.png" alt="The Origins Edition" class="hero-logo">
+        <h1>The <span class="gold">Origins</span> Edition</h1>
+        <p class="subtitle">A global stage celebrating the real beginnings of founders, their grit, growth, and the stories behind their success.</p>
+        <div class="hero-buttons">
+            <a href="#join" class="btn-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Join the Community
+            </a>
+            <a href="#benefits" class="btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                See Benefits
+            </a>
+        </div>
+    </section>
+
+    <!-- BENEFITS -->
+    <section class="benefits-section" id="benefits">
+        <div class="section-label reveal">Community Perks</div>
+        <h2 class="section-title reveal">What You Get</h2>
+        <p class="section-desc reveal">Join 1,000 serious founders and unlock access to premium benefits -- completely free.</p>
+        <div class="benefits-grid">
+            <div class="benefit-pill reveal"><span>&#10003;</span> Elite Network</div>
+            <div class="benefit-pill reveal"><span>&#10003;</span> LinkedIn Feature & Cover Page</div>
+            <div class="benefit-pill reveal"><span>&#10003;</span> Business Opportunities</div>
+            <div class="benefit-pill reveal"><span>&#10003;</span> Official Website Article</div>
+            <div class="benefit-pill reveal"><span>&#10003;</span> Tools Access</div>
+            <div class="benefit-pill reveal"><span>&#10003;</span> META & LinkedIn Branding</div>
+        </div>
+    </section>
+
+    <!-- LATEST POSTS -->
+    <section class="posts-section" id="posts">
+        <div class="section-label reveal">Latest from TOE</div>
+        <h2 class="section-title reveal">Stories & Insights</h2>
+        <p class="section-desc reveal">Real stories from the founder trenches -- lessons, wins, and the truth behind the journey.</p>
+        <div class="posts-grid">
+            <div class="post-card reveal" style="grid-column: 1 / -1;">
+                <div class="post-image" style="height: 280px;">
+                    <span class="post-tag">Collaboration</span>
+                    <img src="image.png" alt="TOE x Finvayu Collaboration" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 0;">
+                </div>
+                <div class="post-content">
+                    <div class="post-date">Aug 25, 2026</div>
+                    <h3>TOE x FINVAYU -- An Official Collaboration</h3>
+                    <p>We're pleased to announce an official collaboration between The Origins Edition (TOE) and FINVAYU CREDIT SOLUTIONS PRIVATE LIMITED to support founders exploring corporate funding opportunities.</p>
+                    <p style="margin-top: 10px;">If your business is looking to raise Rs 5 Cr to Rs 500 Cr+, you can directly DM us. We'll connect you with the Finvayu team to explore the right funding opportunity for your business.</p>
+                    <p style="margin-top: 10px; color: var(--gold); font-weight: 600;">An exclusive opportunity for the TOE founder community.</p>
+                    <p style="margin-top: 8px; font-size: 13px; color: var(--gray);">-- Team TOE</p>
+                </div>
+            </div>
+            <div class="post-card reveal" style="grid-column: 1 / -1;">
+                <div class="post-image" style="height: 320px; background: #0d0d11;">
+                    <img src="image copy.png" alt="Trishala Kachhara - Studio 11" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
+                </div>
+                <div class="post-content">
+                    <div class="post-date">Aug 22, 2026</div>
+                    <h3>From a Laptop to Paris -- The Story of Studio 11</h3>
+                    <p style="margin-bottom: 12px;">I've always wanted to build something of my own, maybe because I grew up watching my grandfather, who came to Mumbai from Rajasthan in the 1960s with nothing and built a legacy through grit and generosity. That legacy of creation has always been my quiet inspiration.</p>
+                    <p style="margin-bottom: 12px;">My career began at Landor, where I built my foundation -- a firm that works across consulting, design, and experience. I learned discipline, craft, and what it takes to create work that lasts. But after a few incredible years, I found myself wanting to explore a side of design that was more personal, more experimental.</p>
+                    <div class="post-collapsible" id="studio11More">
+                        <p style="margin-bottom: 12px;">So, I took a leap. I began freelancing, working on projects that pushed me creatively. Around that time, my brother said something simple that changed everything: <em>"Why don't you just start your own studio?"</em></p>
+                        <p style="margin-bottom: 12px;">With just a laptop, a name, and an idea, Studio 11 was born. There was no team, no roadmap, no safety net. Word of mouth brought in early projects, and slowly, the studio began to find its rhythm.</p>
+                        <p style="margin-bottom: 12px;">Then came a monumental chapter -- I got married and moved to Paris. Living between Mumbai and Paris opened my eyes to new perspectives, new collaborations, and new creative energy. It inspired me to expand Studio 11 globally.</p>
+                        <p style="margin-bottom: 12px;">Of course, the road hasn't been linear. There have been quiet months, steep learning curves, and even a legal battle that taught me the importance of resilience and self-belief. But every challenge shaped the studio and me into something stronger.</p>
+                        <p style="margin-bottom: 16px;">The biggest turning point? Realizing that Studio 11 isn't just a business. It's a reflection of who I am: curious, evolving, and deeply in love with what I do.</p>
+                        <p style="color: var(--gold); font-weight: 600; font-size: 14px; margin-bottom: 8px;">If there's one thing I'd tell anyone dreaming of starting something: You don't need to have it all figured out. You just need to begin.</p>
+                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <p style="font-size: 12px; color: var(--gray); line-height: 1.6;"><strong style="color: var(--gray-light);">Credits:</strong><br>Story & First-Person Narrative -- Trishala Kachhara<br>Narrative Structuring & Editorial -- The Origins Edition</p>
+                            <p style="font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 10px; letter-spacing: 0.5px;">#Studio11 #WomenInDesign #TheOriginsEdition #CreativeLeadership #DesignInspiration</p>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="read-more" onclick="togglePost('studio11More', this)">Read Full Story</a>
+                </div>
+            </div>
+            <div class="post-card reveal" style="grid-column: 1 / -1;">
+                <div class="post-image" style="height: 320px; background: #0d0d11;">
+                    <img src="image copy 2.png" alt="Sana M - 11 Failures" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
+                </div>
+                <div class="post-content">
+                    <div class="post-date">Aug 18, 2026</div>
+                    <h3>I Failed 11 Times Before I Finally Started Building Something That Made Sense</h3>
+                    <p style="margin-bottom: 12px;">Hi, I'm Sana. Born in Mumbai, raised on vada pav, local trains, and the belief that "agla idea pakka chalega." I always knew I wanted to build something of my own. What exactly? No clue. But that never stopped me.</p>
+                    <p style="margin-bottom: 12px;">My founder journey started at 19, when I launched my first "startup": a customised diary business. Turns out... the only person who bought a diary was my mother. Even she asked for a discount. <strong>Failure #1.</strong></p>
+                    <div class="post-collapsible" id="sanaMore">
+                        <p style="margin-bottom: 12px;">From there began a glorious series of entrepreneurial experiments that I like to call "11 steps to becoming accidentally wiser."</p>
+                        <p style="margin-bottom: 12px;">Over the years, I launched:<br>
+                        A fitness app while never visiting a gym myself.<br>
+                        A home-baked cookie brand even though I burn Maggi.<br>
+                        A matchmaking service for introverts. (They never responded to each other.)<br>
+                        A pet accessory startup despite having no pets.<br>
+                        A fashion label where I forgot to arrange inventory.</p>
+                        <p style="margin-bottom: 12px;">And by Failure #7, even my father said, <em>"Beta, LinkedIn pe kuch aur likh de. Founder founder mat likh."</em></p>
+                        <p style="margin-bottom: 12px;">But something remarkable happened with each misstep. I learned. I adapted. I didn't die of embarrassment. And I kept going.</p>
+                        <p style="margin-bottom: 12px;">Today, after 11 failed attempts and 11 notebooks full of crossed-out ideas, I am finally building something new... in stealth. For the first time, it feels aligned. Like all those detours were quietly preparing me.</p>
+                        <p style="margin-bottom: 12px;">People often ask, "Sana, how do you still have the courage?" Truth is, I don't always. But I have something better: <strong>stubborn hope.</strong></p>
+                        <p style="margin-bottom: 12px;">I've realised failure isn't the opposite of success. It's the syllabus. And I've just completed 11 chapters.</p>
+                        <p style="margin-bottom: 16px; color: var(--gold); font-weight: 600; font-size: 14px;">Don't stop. Don't let one "No" or one bad idea convince you that you're not built for this. You are. You just need to take one more step than the version of you who gave up.</p>
+                        <p style="margin-bottom: 16px;">Your failed attempts aren't signs to quit. They're hints that something better is being built inside you. Keep going. We'll get there, one hilarious failure at a time.</p>
+                        <p style="margin-bottom: 16px; font-style: italic; color: var(--gray-light);">-- Sana M.<br>11-times founder, finally on the right path (I think).</p>
+                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);">
+                            <p style="font-size: 12px; color: var(--gray); line-height: 1.6;"><strong style="color: var(--gray-light);">Credits:</strong><br>Story & First-Person Narrative -- Sana M.<br>Narrative Structuring & Editorial -- The Origins Edition</p>
+                            <p style="font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 10px; letter-spacing: 0.5px;">#FounderLife #StartupsOfIndia #NeverGiveUp #BuildInSilence #EntrepreneurJourney</p>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="read-more" onclick="togglePost('sanaMore', this)">Read Full Story</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="join">
+        <div class="section-label reveal">Limited Time Offer</div>
+        <h2 class="section-title reveal">Join FREE -- Save Rs 999</h2>
+        <div class="cta-price reveal">
+            <span class="price-old">Rs 999</span>
+            <span class="price-free">FREE</span>
+        </div>
+        <p class="cta-details reveal">
+            The most elite founders' community is now open -- <strong>join free for a limited time</strong>.<br>
+            Get lifetime access worth Rs 999 -- absolutely free.<br>
+            Build your network, share your story, get featured on the cover -- and more.
+        </p>
+        <a href="https://wa.me/+918108652473?text=TOE" target="_blank" class="whatsapp-btn reveal">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Send DM "TOE" on WhatsApp
+        </a>
+        <p class="limited-text reveal">Limited time -- Only 1,000 founders -- Founders only</p>
+    </section>
+
+    <!-- FOUNDER -->
+    <section class="founder-section">
+        <div class="founder-container">
+            <div class="founder-photo-wrapper reveal">
+                <img src="Founder photo.png" alt="Pradeep Mandol" class="founder-photo" style="object-position: top center;">
+            </div>
+            <div class="founder-info reveal">
+                <h2>Pradeep Mandol</h2>
+                <div class="role">Co-Founder -- The Origins Edition</div>
+                <p>Pradeep, fondly known as <strong>Prad</strong>, is the driving force behind TOE. With a passion for building communities and amplifying founder stories, he created a space where real journeys are celebrated -- not just outcomes.</p>
+                <p>His vision: give every founder a stage, a network, and the tools to grow -- starting from where they began.</p>
+                <div class="founder-quote">
+                    "Every founder has an origin story worth telling. TOE exists to make sure the world hears it."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <img src="TOE LOGO.png" alt="TOE" class="footer-logo">
+        <div class="footer-name">Pradeep Mandol (Prad)</div>
+        <div class="footer-role">Co-Founder -- The Origins Edition</div>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#benefits">Benefits</a>
+            <a href="#posts">Stories</a>
+            <a href="#join">Join</a>
+        </div>
+        <div class="footer-copy">&copy; 2026 The Origins Edition. All rights reserved.</div>
+        <div style="margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.5px;">Designer & Developer &mdash; Riddhiman Puzari</div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            navbar.classList.toggle('scrolled', currentScroll > 50);
+            lastScroll = currentScroll;
+        }, { passive: true });
+
+        // Scroll reveal with stagger
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Smooth anchor scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 70;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Toggle collapsible post content
+        function togglePost(id, el) {
+            const content = document.getElementById(id);
+            const isExpanded = content.classList.contains('expanded');
+            content.classList.toggle('expanded');
+            el.textContent = isExpanded ? 'Read Full Story' : 'Show Less';
+            if (!isExpanded) {
+                setTimeout(() => {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+
+        // Parallax subtle effect on hero
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                const scrolled = window.scrollY;
+                if (scrolled < window.innerHeight) {
+                    hero.style.transform = `translateY(${scrolled * 0.15}px)`;
+                    hero.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
+                }
+            }
+        }, { passive: true });
+    </script>
+
+</body>
+</html>
