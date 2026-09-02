@@ -13,9 +13,9 @@
         }
 
         :root {
-            --gold: #5B8BD4;
-            --gold-light: #7BA4E8;
-            --gold-dim: rgba(91, 139, 212, 0.12);
+            --gold: #D4A843;
+            --gold-light: #E8C06E;
+            --gold-dim: rgba(212, 168, 67, 0.12);
             --dark: #0a0a0a;
             --dark2: #111111;
             --dark3: #1a1a1a;
@@ -49,7 +49,7 @@
             background: rgba(10, 10, 10, 0.7);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(91, 139, 212, 0.08);
+            border-bottom: 1px solid rgba(212, 168, 67, 0.08);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -96,7 +96,7 @@
         .nav-cta:hover {
             background: var(--gold-light);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(91, 139, 212, 0.25);
+            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.25);
         }
 
         /* ===== HERO ===== */
@@ -120,7 +120,7 @@
             transform: translateX(-50%);
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, rgba(91, 139, 212, 0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212, 168, 67, 0.06) 0%, transparent 70%);
             pointer-events: none;
             animation: heroGlow 8s ease-in-out infinite alternate;
         }
@@ -146,7 +146,7 @@
             align-items: center;
             gap: 8px;
             background: var(--gold-dim);
-            border: 1px solid rgba(91, 139, 212, 0.2);
+            border: 1px solid rgba(212, 168, 67, 0.2);
             padding: 8px 22px;
             border-radius: 50px;
             font-size: 11px;
@@ -164,7 +164,7 @@
             object-fit: contain;
             margin-bottom: 32px;
             animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
-            filter: drop-shadow(0 0 40px rgba(91, 139, 212, 0.2));
+            filter: drop-shadow(0 0 40px rgba(212, 168, 67, 0.2));
         }
 
         .hero h1 {
@@ -216,7 +216,7 @@
         .btn-primary:hover {
             background: var(--gold-light);
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(91, 139, 212, 0.25);
+            box-shadow: 0 12px 35px rgba(212, 168, 67, 0.25);
         }
 
         .btn-secondary {
@@ -235,9 +235,9 @@
         }
 
         .btn-secondary:hover {
-            border-color: rgba(91, 139, 212, 0.3);
+            border-color: rgba(212, 168, 67, 0.3);
             color: var(--gold);
-            background: rgba(91, 139, 212, 0.05);
+            background: rgba(212, 168, 67, 0.05);
             transform: translateY(-2px);
         }
 
@@ -282,7 +282,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.2), transparent);
         }
 
         .benefits-grid {
@@ -295,8 +295,9 @@
         }
 
         .benefit-pill {
-            background: rgba(91, 139, 212, 0.08);
-            border: 1px solid rgba(91, 139, 212, 0.18);
+            position: relative;
+            background: rgba(212, 168, 67, 0.08);
+            border: 1px solid rgba(212, 168, 67, 0.18);
             border-radius: 50px;
             padding: 14px 28px;
             font-size: 14px;
@@ -304,19 +305,54 @@
             color: var(--white);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: default;
+            overflow: hidden;
         }
 
+        .benefit-pill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(245, 197, 66, 0.4),
+                rgba(245, 197, 66, 0.15),
+                transparent
+            );
+            width: 100%;
+            animation: shimmer 8s ease-in-out infinite;
+        }
+
+        .benefit-pill:nth-child(1)::before { animation-delay: 0s; }
+        .benefit-pill:nth-child(2)::before { animation-delay: 1s; }
+        .benefit-pill:nth-child(3)::before { animation-delay: 2s; }
+        .benefit-pill:nth-child(4)::before { animation-delay: 3s; }
+        .benefit-pill:nth-child(5)::before { animation-delay: 4s; }
+        .benefit-pill:nth-child(6)::before { animation-delay: 5s; }
+        .benefit-pill:nth-child(7)::before { animation-delay: 6s; }
+        .benefit-pill:nth-child(8)::before { animation-delay: 7s; }
+
         .benefit-pill:hover {
-            background: rgba(91, 139, 212, 0.15);
-            border-color: rgba(91, 139, 212, 0.35);
+            background: rgba(212, 168, 67, 0.15);
+            border-color: rgba(212, 168, 67, 0.35);
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(91, 139, 212, 0.12);
+            box-shadow: 0 6px 24px rgba(212, 168, 67, 0.12);
         }
 
         .benefit-pill span {
             color: var(--gold);
             margin-right: 6px;
             font-size: 13px;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { left: -100%; opacity: 0; }
+            8% { opacity: 1; }
+            40% { left: 100%; opacity: 0; }
+            100% { opacity: 0; }
         }
 
         /* ===== POSTS ===== */
@@ -334,7 +370,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.15), transparent);
         }
 
         .posts-grid {
@@ -354,7 +390,7 @@
         }
 
         .post-card:hover {
-            border-color: rgba(91, 139, 212, 0.1);
+            border-color: rgba(212, 168, 67, 0.1);
             transform: translateY(-4px);
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
         }
@@ -392,7 +428,7 @@
             position: absolute;
             top: 16px;
             left: 16px;
-            background: rgba(91, 139, 212, 0.15);
+            background: rgba(212, 168, 67, 0.15);
             color: var(--gold);
             padding: 5px 14px;
             border-radius: 50px;
@@ -473,7 +509,7 @@
             transform: translate(-50%, -50%);
             width: 700px;
             height: 700px;
-            background: radial-gradient(circle, rgba(91, 139, 212, 0.04) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(212, 168, 67, 0.04) 0%, transparent 70%);
             pointer-events: none;
             animation: ctaGlow 6s ease-in-out infinite alternate;
         }
@@ -490,7 +526,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.15), transparent);
         }
 
         .cta-price {
@@ -574,7 +610,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(91, 139, 212, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.15), transparent);
         }
 
         .founder-container {
@@ -596,12 +632,12 @@
             object-fit: cover;
             object-position: top;
             border-radius: 16px;
-            border: 1px solid rgba(91, 139, 212, 0.12);
+            border: 1px solid rgba(212, 168, 67, 0.12);
             transition: all 0.5s ease;
         }
 
         .founder-photo-wrapper:hover .founder-photo {
-            border-color: rgba(91, 139, 212, 0.25);
+            border-color: rgba(212, 168, 67, 0.25);
         }
 
         .founder-photo-wrapper::after {
@@ -806,12 +842,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(91, 139, 212, 0.2);
+            background: rgba(212, 168, 67, 0.2);
             border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(91, 139, 212, 0.4);
+            background: rgba(212, 168, 67, 0.4);
         }
     </style>
 </head>
@@ -856,6 +892,7 @@
             <div class="benefit-pill reveal"><span>&#10003;</span> Official Website Article</div>
             <div class="benefit-pill reveal"><span>&#10003;</span> Tools Access</div>
             <div class="benefit-pill reveal"><span>&#10003;</span> META & LinkedIn Branding</div>
+            <div class="benefit-pill reveal"><span>&#10003;</span> And Many More...</div>
         </div>
     </section>
 
