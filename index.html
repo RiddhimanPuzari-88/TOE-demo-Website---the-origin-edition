@@ -13,15 +13,16 @@
         }
 
         :root {
-            --gold: #D4A843;
-            --gold-light: #E8C06E;
-            --gold-dim: rgba(212, 168, 67, 0.12);
-            --dark: #0a0a0a;
-            --dark2: #111111;
-            --dark3: #1a1a1a;
-            --white: #FFFFFF;
-            --gray: #999999;
-            --gray-light: #cccccc;
+            --gold: #E9B31E;
+            --gold-light: #F5CD4A;
+            --gold-dim: rgba(233, 179, 30, 0.12);
+            --dark: #ECECEF;
+            --dark2: #E3E3E7;
+            --dark3: #DADAE0;
+            --white: #1A1A1A;
+            --gray: #6E6E77;
+            --gray-light: #55555E;
+            --line: rgba(26, 26, 26, 0.08);
         }
 
         html {
@@ -46,17 +47,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid rgba(212, 168, 67, 0.08);
+            background: rgba(236, 236, 239, 0.6);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-bottom: 1px solid var(--line);
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         nav.scrolled {
             padding: 12px 28px;
-            background: rgba(10, 10, 10, 0.92);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(236, 236, 239, 0.85);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
         }
 
         .nav-logo {
@@ -66,18 +67,11 @@
             text-decoration: none;
         }
 
-        .nav-logo img {
-            height: 34px;
-            width: 34px;
-            object-fit: contain;
-            border-radius: 50%;
-        }
-
         .nav-logo span {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             font-size: 15px;
-            color: var(--gold);
+            color: #6b666f;
             letter-spacing: 1.5px;
         }
 
@@ -96,7 +90,7 @@
         .nav-cta:hover {
             background: var(--gold-light);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(212, 168, 67, 0.25);
+            box-shadow: 0 4px 20px rgba(233, 179, 30, 0.25);
         }
 
         /* ===== HERO ===== */
@@ -120,7 +114,7 @@
             transform: translateX(-50%);
             width: 800px;
             height: 800px;
-            background: radial-gradient(circle, rgba(212, 168, 67, 0.06) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(233, 179, 30, 0.06) 0%, transparent 70%);
             pointer-events: none;
             animation: heroGlow 8s ease-in-out infinite alternate;
         }
@@ -145,13 +139,13 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--gold-dim);
-            border: 1px solid rgba(212, 168, 67, 0.2);
+            background: rgba(107, 102, 111, 0.10);
+            border: 1px solid rgba(107, 102, 111, 0.35);
             padding: 8px 22px;
             border-radius: 50px;
             font-size: 11px;
             font-weight: 500;
-            color: var(--gold);
+            color: #6b666f;
             letter-spacing: 2.5px;
             text-transform: uppercase;
             margin-bottom: 36px;
@@ -159,12 +153,13 @@
         }
 
         .hero-logo {
-            width: 90px;
-            height: 90px;
+            width: 340px;
+            height: 340px;
             object-fit: contain;
+            background: transparent;
             margin-bottom: 32px;
             animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
-            filter: drop-shadow(0 0 40px rgba(212, 168, 67, 0.2));
+            filter: drop-shadow(0 0 40px rgba(233, 179, 30, 0.2));
         }
 
         .hero h1 {
@@ -216,18 +211,18 @@
         .btn-primary:hover {
             background: var(--gold-light);
             transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(212, 168, 67, 0.25);
+            box-shadow: 0 12px 35px rgba(233, 179, 30, 0.25);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(26, 26, 26, 0.03);
             color: var(--gray-light);
             padding: 14px 34px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             font-size: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(26, 26, 26, 0.12);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
@@ -235,9 +230,9 @@
         }
 
         .btn-secondary:hover {
-            border-color: rgba(212, 168, 67, 0.3);
+            border-color: rgba(233, 179, 30, 0.3);
             color: var(--gold);
-            background: rgba(212, 168, 67, 0.05);
+            background: rgba(233, 179, 30, 0.05);
             transform: translateY(-2px);
         }
 
@@ -267,6 +262,40 @@
             font-size: 15px;
         }
 
+        /* ===== SECTION CARDS (unified) ===== */
+        .section-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(233, 179, 30, 0.25);
+            border-radius: 22px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.07), 0 2px 12px rgba(0, 0, 0, 0.04);
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-card:hover {
+            border-color: rgba(233, 179, 30, 0.5);
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.1), 0 0 24px rgba(233, 179, 30, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 24px;
+            right: 24px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            border-radius: 50%;
+        }
+
+        .benefits-card { max-width: 860px; }
+        .cta-card { max-width: 720px; }
+        .founder-card { max-width: 1000px; padding: 40px; }
+
         /* ===== BENEFITS ===== */
         .benefits-section {
             padding: 100px 24px;
@@ -282,7 +311,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(233, 179, 30, 0.2), transparent);
         }
 
         .benefits-grid {
@@ -296,13 +325,13 @@
 
         .benefit-pill {
             position: relative;
-            background: rgba(212, 168, 67, 0.08);
-            border: 1px solid rgba(212, 168, 67, 0.18);
+            background: rgba(20, 20, 22, 0.06);
+            border: 1px solid rgba(20, 20, 22, 0.30);
             border-radius: 50px;
             padding: 14px 28px;
             font-size: 14px;
             font-weight: 600;
-            color: var(--white);
+            color: #1a1a1c;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: default;
             overflow: hidden;
@@ -318,8 +347,8 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(245, 197, 66, 0.4),
-                rgba(245, 197, 66, 0.15),
+                rgba(20, 20, 22, 0.18),
+                rgba(20, 20, 22, 0.06),
                 transparent
             );
             width: 100%;
@@ -336,10 +365,10 @@
         .benefit-pill:nth-child(8)::before { animation-delay: 7s; }
 
         .benefit-pill:hover {
-            background: rgba(212, 168, 67, 0.15);
-            border-color: rgba(212, 168, 67, 0.35);
+            background: rgba(20, 20, 22, 0.10);
+            border-color: rgba(20, 20, 22, 0.55);
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(212, 168, 67, 0.12);
+            box-shadow: 0 6px 24px rgba(20, 20, 22, 0.10);
         }
 
         .benefit-pill span {
@@ -370,7 +399,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(233, 179, 30, 0.15), transparent);
         }
 
         .posts-grid {
@@ -382,28 +411,41 @@
         }
 
         .post-card {
-            background: var(--dark2);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 18px;
+            background: #FFFFFF;
+            border: 1px solid rgba(233, 179, 30, 0.25);
+            border-radius: 22px;
             overflow: hidden;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.07), 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .post-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 24px;
+            right: 24px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            z-index: 2;
         }
 
         .post-card:hover {
-            border-color: rgba(212, 168, 67, 0.1);
+            border-color: rgba(233, 179, 30, 0.5);
             transform: translateY(-4px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.1), 0 0 24px rgba(233, 179, 30, 0.08);
         }
 
         .post-image {
             width: 100%;
             height: 200px;
-            background: linear-gradient(135deg, var(--dark3), var(--dark4));
+            background: linear-gradient(135deg, var(--dark3), var(--dark));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(26, 26, 26, 0.06);
             position: relative;
             overflow: hidden;
         }
@@ -428,7 +470,7 @@
             position: absolute;
             top: 16px;
             left: 16px;
-            background: rgba(212, 168, 67, 0.15);
+            background: rgba(233, 179, 30, 0.15);
             color: var(--gold);
             padding: 5px 14px;
             border-radius: 50px;
@@ -509,7 +551,7 @@
             transform: translate(-50%, -50%);
             width: 700px;
             height: 700px;
-            background: radial-gradient(circle, rgba(212, 168, 67, 0.04) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(233, 179, 30, 0.04) 0%, transparent 70%);
             pointer-events: none;
             animation: ctaGlow 6s ease-in-out infinite alternate;
         }
@@ -526,7 +568,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(233, 179, 30, 0.15), transparent);
         }
 
         .cta-price {
@@ -568,7 +610,7 @@
             align-items: center;
             gap: 12px;
             background: #25D366;
-            color: var(--white);
+            color: #FFFFFF;
             padding: 16px 40px;
             border-radius: 50px;
             text-decoration: none;
@@ -610,7 +652,7 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(233, 179, 30, 0.15), transparent);
         }
 
         .founder-container {
@@ -632,12 +674,12 @@
             object-fit: cover;
             object-position: top;
             border-radius: 16px;
-            border: 1px solid rgba(212, 168, 67, 0.12);
+            border: 1px solid rgba(233, 179, 30, 0.12);
             transition: all 0.5s ease;
         }
 
         .founder-photo-wrapper:hover .founder-photo {
-            border-color: rgba(212, 168, 67, 0.25);
+            border-color: rgba(233, 179, 30, 0.25);
         }
 
         .founder-photo-wrapper::after {
@@ -697,7 +739,7 @@
         footer {
             padding: 60px 24px 30px;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-top: 1px solid rgba(26, 26, 26, 0.08);
             background: var(--dark2);
         }
 
@@ -744,7 +786,7 @@
         }
 
         .footer-copy {
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(26, 26, 26, 0.45);
             font-size: 11px;
             letter-spacing: 0.5px;
         }
@@ -782,6 +824,10 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
+            .section-card {
+                padding: 32px 22px;
+            }
+
             .founder-container {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -818,6 +864,11 @@
         }
 
         @media (max-width: 480px) {
+            .hero-logo {
+                width: 220px;
+                height: 220px;
+            }
+
             .benefit-pill {
                 padding: 12px 20px;
                 font-size: 13px;
@@ -842,21 +893,34 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: rgba(212, 168, 67, 0.2);
+            background: rgba(233, 179, 30, 0.2);
             border-radius: 3px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(212, 168, 67, 0.4);
+            background: rgba(233, 179, 30, 0.4);
+        }
+
+        /* ===== DOTS BACKGROUND ===== */
+        #dot-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.5;
         }
     </style>
 </head>
 <body>
 
+    <canvas id="dot-canvas"></canvas>
+
     <!-- NAVBAR -->
     <nav id="navbar">
         <a href="#" class="nav-logo">
-            <img src="TOE LOGO.png" alt="TOE Logo">
             <span>THE ORIGINS EDITION</span>
         </a>
         <a href="#join" class="nav-cta">Join FREE</a>
@@ -866,7 +930,6 @@
     <section class="hero" id="home">
         <div class="hero-badge">&#9733; INVITE-ONLY FOUNDERS COMMUNITY</div>
         <img src="TOE LOGO.png" alt="The Origins Edition" class="hero-logo">
-        <h1>The <span class="gold">Origins</span> Edition</h1>
         <p class="subtitle">A global stage celebrating the real beginnings of founders, their grit, growth, and the stories behind their success.</p>
         <div class="hero-buttons">
             <a href="#join" class="btn-primary">
@@ -882,17 +945,19 @@
 
     <!-- BENEFITS -->
     <section class="benefits-section" id="benefits">
-        <div class="section-label reveal">Community Perks</div>
-        <h2 class="section-title reveal">What You Get</h2>
-        <p class="section-desc reveal">Join 1,000 serious founders and unlock access to premium benefits -- completely free.</p>
-        <div class="benefits-grid">
-            <div class="benefit-pill reveal"><span>&#10003;</span> Elite Network</div>
-            <div class="benefit-pill reveal"><span>&#10003;</span> LinkedIn Feature & Cover Page</div>
-            <div class="benefit-pill reveal"><span>&#10003;</span> Business Opportunities</div>
-            <div class="benefit-pill reveal"><span>&#10003;</span> Official Website Article</div>
-            <div class="benefit-pill reveal"><span>&#10003;</span> Tools Access</div>
-            <div class="benefit-pill reveal"><span>&#10003;</span> META & LinkedIn Branding</div>
-            <div class="benefit-pill reveal"><span>&#10003;</span> And Many More...</div>
+        <div class="section-card benefits-card reveal">
+            <div class="section-label reveal">Community Perks</div>
+            <h2 class="section-title reveal">What You Get</h2>
+            <p class="section-desc reveal" style="margin-bottom: 36px;">Join 1,000 serious founders and unlock access to premium benefits -- completely free.</p>
+            <div class="benefits-grid">
+                <div class="benefit-pill reveal"><span>&#10003;</span> Elite Network</div>
+                <div class="benefit-pill reveal"><span>&#10003;</span> LinkedIn Feature & Cover Page</div>
+                <div class="benefit-pill reveal"><span>&#10003;</span> Business Opportunities</div>
+                <div class="benefit-pill reveal"><span>&#10003;</span> Official Website Article</div>
+                <div class="benefit-pill reveal"><span>&#10003;</span> Tools Access</div>
+                <div class="benefit-pill reveal"><span>&#10003;</span> META & LinkedIn Branding</div>
+                <div class="benefit-pill reveal"><span>&#10003;</span> And Many More...</div>
+            </div>
         </div>
     </section>
 
@@ -917,7 +982,7 @@
                 </div>
             </div>
             <div class="post-card reveal" style="grid-column: 1 / -1;">
-                <div class="post-image" style="height: 320px; background: #0d0d11;">
+                <div class="post-image" style="height: 320px; background: #DADAE0;">
                     <img src="image copy.png" alt="Trishala Kachhara - Studio 11" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
                 </div>
                 <div class="post-content">
@@ -932,16 +997,16 @@
                         <p style="margin-bottom: 12px;">Of course, the road hasn't been linear. There have been quiet months, steep learning curves, and even a legal battle that taught me the importance of resilience and self-belief. But every challenge shaped the studio and me into something stronger.</p>
                         <p style="margin-bottom: 16px;">The biggest turning point? Realizing that Studio 11 isn't just a business. It's a reflection of who I am: curious, evolving, and deeply in love with what I do.</p>
                         <p style="color: var(--gold); font-weight: 600; font-size: 14px; margin-bottom: 8px;">If there's one thing I'd tell anyone dreaming of starting something: You don't need to have it all figured out. You just need to begin.</p>
-                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);">
+                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(26,26,26,0.08);">
                             <p style="font-size: 12px; color: var(--gray); line-height: 1.6;"><strong style="color: var(--gray-light);">Credits:</strong><br>Story & First-Person Narrative -- Trishala Kachhara<br>Narrative Structuring & Editorial -- The Origins Edition</p>
-                            <p style="font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 10px; letter-spacing: 0.5px;">#Studio11 #WomenInDesign #TheOriginsEdition #CreativeLeadership #DesignInspiration</p>
+                            <p style="font-size: 11px; color: rgba(26,26,26,0.40); margin-top: 10px; letter-spacing: 0.5px;">#Studio11 #WomenInDesign #TheOriginsEdition #CreativeLeadership #DesignInspiration</p>
                         </div>
                     </div>
                     <a href="javascript:void(0)" class="read-more" onclick="togglePost('studio11More', this)">Read Full Story</a>
                 </div>
             </div>
             <div class="post-card reveal" style="grid-column: 1 / -1;">
-                <div class="post-image" style="height: 320px; background: #0d0d11;">
+                <div class="post-image" style="height: 320px; background: #DADAE0;">
                     <img src="image copy 2.png" alt="Sana M - 11 Failures" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
                 </div>
                 <div class="post-content">
@@ -965,9 +1030,9 @@
                         <p style="margin-bottom: 16px; color: var(--gold); font-weight: 600; font-size: 14px;">Don't stop. Don't let one "No" or one bad idea convince you that you're not built for this. You are. You just need to take one more step than the version of you who gave up.</p>
                         <p style="margin-bottom: 16px;">Your failed attempts aren't signs to quit. They're hints that something better is being built inside you. Keep going. We'll get there, one hilarious failure at a time.</p>
                         <p style="margin-bottom: 16px; font-style: italic; color: var(--gray-light);">-- Sana M.<br>11-times founder, finally on the right path (I think).</p>
-                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);">
+                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(26,26,26,0.08);">
                             <p style="font-size: 12px; color: var(--gray); line-height: 1.6;"><strong style="color: var(--gray-light);">Credits:</strong><br>Story & First-Person Narrative -- Sana M.<br>Narrative Structuring & Editorial -- The Origins Edition</p>
-                            <p style="font-size: 11px; color: rgba(255,255,255,0.25); margin-top: 10px; letter-spacing: 0.5px;">#FounderLife #StartupsOfIndia #NeverGiveUp #BuildInSilence #EntrepreneurJourney</p>
+                            <p style="font-size: 11px; color: rgba(26,26,26,0.40); margin-top: 10px; letter-spacing: 0.5px;">#FounderLife #StartupsOfIndia #NeverGiveUp #BuildInSilence #EntrepreneurJourney</p>
                         </div>
                     </div>
                     <a href="javascript:void(0)" class="read-more" onclick="togglePost('sanaMore', this)">Read Full Story</a>
@@ -978,37 +1043,41 @@
 
     <!-- CTA -->
     <section class="cta-section" id="join">
-        <div class="section-label reveal">Limited Time Offer</div>
-        <h2 class="section-title reveal">Join FREE -- Save Rs 999</h2>
-        <div class="cta-price reveal">
-            <span class="price-old">Rs 999</span>
-            <span class="price-free">FREE</span>
+        <div class="section-card cta-card reveal">
+            <div class="section-label reveal">Limited Time Offer</div>
+            <h2 class="section-title reveal">Join FREE -- Save Rs 999</h2>
+            <div class="cta-price reveal">
+                <span class="price-old">Rs 999</span>
+                <span class="price-free">FREE</span>
+            </div>
+            <p class="cta-details reveal">
+                The most elite founders' community is now open -- <strong>join free for a limited time</strong>.<br>
+                Get lifetime access worth Rs 999 -- absolutely free.<br>
+                Build your network, share your story, get featured on the cover -- and more.
+            </p>
+            <a href="https://wa.me/+918108652473?text=TOE" target="_blank" class="whatsapp-btn reveal">
+                <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Send DM "TOE" on WhatsApp
+            </a>
+            <p class="limited-text reveal">Limited time -- Only 1,000 founders -- Founders only</p>
         </div>
-        <p class="cta-details reveal">
-            The most elite founders' community is now open -- <strong>join free for a limited time</strong>.<br>
-            Get lifetime access worth Rs 999 -- absolutely free.<br>
-            Build your network, share your story, get featured on the cover -- and more.
-        </p>
-        <a href="https://wa.me/+918108652473?text=TOE" target="_blank" class="whatsapp-btn reveal">
-            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-            Send DM "TOE" on WhatsApp
-        </a>
-        <p class="limited-text reveal">Limited time -- Only 1,000 founders -- Founders only</p>
     </section>
 
     <!-- FOUNDER -->
     <section class="founder-section">
-        <div class="founder-container">
-            <div class="founder-photo-wrapper reveal">
-                <img src="Founder photo.png" alt="Pradeep Mandol" class="founder-photo" style="object-position: top center;">
-            </div>
-            <div class="founder-info reveal">
-                <h2>Pradeep Mandol</h2>
-                <div class="role">Co-Founder -- The Origins Edition</div>
-                <p>Pradeep, fondly known as <strong>Prad</strong>, is the driving force behind TOE. With a passion for building communities and amplifying founder stories, he created a space where real journeys are celebrated -- not just outcomes.</p>
-                <p>His vision: give every founder a stage, a network, and the tools to grow -- starting from where they began.</p>
-                <div class="founder-quote">
-                    "Every founder has an origin story worth telling. TOE exists to make sure the world hears it."
+        <div class="section-card founder-card reveal">
+            <div class="founder-container">
+                <div class="founder-photo-wrapper reveal">
+                    <img src="Founder photo.png" alt="Pradeep Mandol" class="founder-photo" style="object-position: top center;">
+                </div>
+                <div class="founder-info reveal">
+                    <h2>Pradeep Mandol</h2>
+                    <div class="role">Co-Founder -- The Origins Edition</div>
+                    <p>Pradeep, fondly known as <strong>Prad</strong>, is the driving force behind TOE. With a passion for building communities and amplifying founder stories, he created a space where real journeys are celebrated -- not just outcomes.</p>
+                    <p>His vision: give every founder a stage, a network, and the tools to grow -- starting from where they began.</p>
+                    <div class="founder-quote">
+                        "Every founder has an origin story worth telling. TOE exists to make sure the world hears it."
+                    </div>
                 </div>
             </div>
         </div>
@@ -1026,7 +1095,7 @@
             <a href="#join">Join</a>
         </div>
         <div class="footer-copy">&copy; 2026 The Origins Edition. All rights reserved.</div>
-        <div style="margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.5px;">Designer & Developer &mdash; Riddhiman Puzari</div>
+        <div style="margin-top: 16px; font-size: 11px; color: rgba(26,26,26,0.40); letter-spacing: 0.5px;">Designer & Developer &mdash; Riddhiman Puzari</div>
     </footer>
 
     <script>
@@ -1091,6 +1160,69 @@
                 }
             }
         }, { passive: true });
+
+        // ===== WAVE DOTS BACKGROUND =====
+        (function() {
+            const canvas = document.getElementById('dot-canvas');
+            const ctx = canvas.getContext('2d');
+            const DOTS = [];
+            const GAP = 42;
+            const DOT_RADIUS = 1.6;
+
+            let cols, rows;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                cols = Math.floor(canvas.width / GAP) + 1;
+                rows = Math.floor(canvas.height / GAP) + 1;
+                DOTS.length = 0;
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        DOTS.push({
+                            x: c * GAP,
+                            y: r * GAP,
+                            baseY: r * GAP,
+                            speed: 0.5 + Math.random() * 0.8,
+                            amp: 8 + Math.random() * 14,
+                            phase: Math.random() * Math.PI * 2
+                        });
+                    }
+                }
+            }
+
+            function render(time, scrollY) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'rgba(20, 20, 24, 0.55)';
+                const t = time / 1000;
+
+                for (const d of DOTS) {
+                    // Wave in Y, scroll drives wave phase movement
+                    const wavePhase = (t * d.speed + d.phase) + scrollY * 0.005;
+                    const dy = Math.sin(wavePhase) * d.amp;
+                    const opacity = 0.25 + 0.65 * Math.abs(Math.sin(wavePhase * 0.5));
+                    ctx.globalAlpha = opacity;
+                    ctx.beginPath();
+                    ctx.arc(d.x, d.baseY + dy, DOT_RADIUS, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(next);
+            }
+
+            let currentScroll = window.scrollY;
+            function next(time) {
+                render(time, currentScroll);
+            }
+
+            window.addEventListener('resize', resize);
+            window.addEventListener('scroll', () => {
+                currentScroll = window.scrollY;
+            }, { passive: true });
+
+            resize();
+            requestAnimationFrame(next);
+        })();
     </script>
 
 </body>
