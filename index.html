@@ -23,6 +23,14 @@
             --gray: #6E6E77;
             --gray-light: #55555E;
             --line: rgba(26, 26, 26, 0.08);
+            /* Dark theme section colors */
+            --d-bg: #0a0a0a;
+            --d-bg2: #111111;
+            --d-card: #1a1a1a;
+            --d-text: #FFFFFF;
+            --d-text2: #cccccc;
+            --d-text3: #888888;
+            --d-line: rgba(255, 255, 255, 0.08);
         }
 
         html {
@@ -37,27 +45,71 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== NAVBAR ===== */
+        /* ===== NAVBAR (dual-layer crossfade) ===== */
         nav {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
             z-index: 1000;
-            padding: 18px 28px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(236, 236, 239, 0.6);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border-bottom: 1px solid var(--line);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         nav.scrolled {
             padding: 12px 28px;
-            background: rgba(236, 236, 239, 0.85);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Shared bar layout */
+        nav.nav-light,
+        nav.nav-dark {
+            padding: 18px 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Light layer (over hero) */
+        nav.nav-light {
+            background: rgba(236, 236, 239, 0.10);
+            border-bottom: 1px solid var(--line);
+            color: var(--white);
+            z-index: 1000;
+        }
+
+        nav.nav-light .nav-logo span {
+            color: #6b666f;
+        }
+
+        /* Dark layer (over dark sections) — stacked, hidden initially */
+        nav.nav-dark {
+            background: rgba(10, 10, 10, 0.88);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            color: #fff;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        nav.nav-dark .nav-logo span {
+            color: var(--gold-light);
+        }
+
+        /* Crossfade state on body */
+        body.nav-state-dark nav.nav-light {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.nav-state-dark nav.nav-dark {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        nav.scrolled {
+            padding: 12px 28px;
         }
 
         .nav-logo {
@@ -71,7 +123,6 @@
             font-family: 'Playfair Display', serif;
             font-weight: 700;
             font-size: 15px;
-            color: #6b666f;
             letter-spacing: 1.5px;
         }
 
@@ -300,9 +351,12 @@
         .benefits-section {
             padding: 100px 24px;
             text-align: center;
-            background: var(--dark2);
+            background: var(--d-bg);
             position: relative;
         }
+
+        .benefits-section .section-title { color: var(--d-text); }
+        .benefits-section .section-desc { color: var(--d-text3); }
 
         .benefits-section::before {
             content: '';
@@ -312,6 +366,27 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(233, 179, 30, 0.2), transparent);
+        }
+
+        /* Flat black — remove card look for benefits */
+        .benefits-card {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            box-shadow: none;
+            max-width: 100%;
+            transition: none;
+        }
+
+        .benefits-card:hover {
+            border: none;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .benefits-card::before {
+            display: none;
         }
 
         .benefits-grid {
@@ -325,13 +400,13 @@
 
         .benefit-pill {
             position: relative;
-            background: rgba(20, 20, 22, 0.06);
-            border: 1px solid rgba(20, 20, 22, 0.30);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 50px;
             padding: 14px 28px;
             font-size: 14px;
             font-weight: 600;
-            color: #1a1a1c;
+            color: #e8e8ea;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: default;
             overflow: hidden;
@@ -347,8 +422,8 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(20, 20, 22, 0.18),
-                rgba(20, 20, 22, 0.06),
+                rgba(255, 255, 255, 0.14),
+                rgba(255, 255, 255, 0.04),
                 transparent
             );
             width: 100%;
@@ -365,10 +440,10 @@
         .benefit-pill:nth-child(8)::before { animation-delay: 7s; }
 
         .benefit-pill:hover {
-            background: rgba(20, 20, 22, 0.10);
-            border-color: rgba(20, 20, 22, 0.55);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.45);
             transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(20, 20, 22, 0.10);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
         }
 
         .benefit-pill span {
@@ -388,9 +463,12 @@
         .posts-section {
             padding: 100px 24px;
             text-align: center;
-            background: var(--dark);
+            background: var(--d-bg);
             position: relative;
         }
+
+        .posts-section .section-title { color: var(--d-text); }
+        .posts-section .section-desc { color: var(--d-text3); }
 
         .posts-section::before {
             content: '';
@@ -411,13 +489,13 @@
         }
 
         .post-card {
-            background: #FFFFFF;
+            background: var(--d-card);
             border: 1px solid rgba(233, 179, 30, 0.25);
             border-radius: 22px;
             overflow: hidden;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.07), 0 2px 12px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 2px 12px rgba(0, 0, 0, 0.2);
         }
 
         .post-card::before {
@@ -434,18 +512,18 @@
         .post-card:hover {
             border-color: rgba(233, 179, 30, 0.5);
             transform: translateY(-4px);
-            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.1), 0 0 24px rgba(233, 179, 30, 0.08);
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5), 0 0 24px rgba(233, 179, 30, 0.08);
         }
 
         .post-image {
             width: 100%;
             height: 200px;
-            background: linear-gradient(135deg, var(--dark3), var(--dark));
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 40px;
-            border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             position: relative;
             overflow: hidden;
         }
@@ -457,7 +535,7 @@
             left: 0;
             right: 0;
             height: 40%;
-            background: linear-gradient(to top, var(--dark2), transparent);
+            background: linear-gradient(to top, var(--d-card), transparent);
             z-index: 0;
         }
 
@@ -488,7 +566,7 @@
         }
 
         .post-date {
-            color: var(--gray);
+            color: var(--d-text3);
             font-size: 12px;
             margin-bottom: 10px;
             letter-spacing: 0.5px;
@@ -500,10 +578,11 @@
             font-weight: 700;
             margin-bottom: 12px;
             line-height: 1.35;
+            color: var(--d-text);
         }
 
         .post-card p {
-            color: var(--gray);
+            color: var(--d-text2);
             font-size: 13.5px;
             line-height: 1.7;
         }
@@ -540,8 +619,11 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            background: var(--dark2);
+            background: var(--d-bg2);
         }
+
+        .cta-section .section-title { color: var(--d-text); }
+        .cta-section .section-desc { color: var(--d-text3); }
 
         .cta-section::before {
             content: '';
@@ -551,7 +633,7 @@
             transform: translate(-50%, -50%);
             width: 700px;
             height: 700px;
-            background: radial-gradient(circle, rgba(233, 179, 30, 0.04) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(233, 179, 30, 0.08) 0%, transparent 70%);
             pointer-events: none;
             animation: ctaGlow 6s ease-in-out infinite alternate;
         }
@@ -571,6 +653,12 @@
             background: linear-gradient(90deg, transparent, rgba(233, 179, 30, 0.15), transparent);
         }
 
+        .cta-card {
+            background: var(--d-card);
+            border: 1px solid rgba(233, 179, 30, 0.25);
+            max-width: 720px;
+        }
+
         .cta-price {
             display: flex;
             align-items: center;
@@ -581,7 +669,7 @@
 
         .price-old {
             font-size: 24px;
-            color: var(--gray);
+            color: var(--d-text3);
             text-decoration: line-through;
             opacity: 0.6;
         }
@@ -594,7 +682,7 @@
         }
 
         .cta-details {
-            color: var(--gray);
+            color: var(--d-text2);
             font-size: 14.5px;
             max-width: 480px;
             margin: 0 auto 40px;
@@ -602,7 +690,7 @@
         }
 
         .cta-details strong {
-            color: var(--white);
+            color: var(--d-text);
         }
 
         .whatsapp-btn {
@@ -633,7 +721,7 @@
 
         .limited-text {
             margin-top: 22px;
-            color: var(--gray);
+            color: var(--d-text3);
             font-size: 12px;
             letter-spacing: 1.5px;
         }
@@ -641,7 +729,7 @@
         /* ===== FOUNDER ===== */
         .founder-section {
             padding: 80px 24px;
-            background: var(--dark);
+            background: var(--d-bg);
             position: relative;
         }
 
@@ -653,6 +741,13 @@
             right: 0;
             height: 1px;
             background: linear-gradient(90deg, transparent, rgba(233, 179, 30, 0.15), transparent);
+        }
+
+        .founder-card {
+            background: var(--d-bg2);
+            border: 1px solid rgba(233, 179, 30, 0.25);
+            max-width: 1000px;
+            padding: 40px;
         }
 
         .founder-container {
@@ -705,6 +800,7 @@
             font-size: clamp(28px, 5vw, 38px);
             font-weight: 800;
             margin-bottom: 4px;
+            color: var(--d-text);
         }
 
         .founder-info .role {
@@ -717,7 +813,7 @@
         }
 
         .founder-info p {
-            color: var(--gray-light);
+            color: var(--d-text2);
             line-height: 1.85;
             font-size: 14.5px;
             margin-bottom: 14px;
@@ -727,10 +823,10 @@
             margin-top: 24px;
             padding: 20px 24px;
             border-left: 2px solid var(--gold);
-            background: var(--gold-dim);
+            background: rgba(233, 179, 30, 0.06);
             border-radius: 0 12px 12px 0;
             font-style: italic;
-            color: var(--gray-light);
+            color: var(--d-text2);
             font-size: 14.5px;
             line-height: 1.75;
         }
@@ -918,8 +1014,14 @@
 
     <canvas id="dot-canvas"></canvas>
 
-    <!-- NAVBAR -->
-    <nav id="navbar">
+    <!-- NAVBAR (dual-layer crossfade) -->
+    <nav id="navbar" class="nav-light">
+        <a href="#" class="nav-logo">
+            <span>THE ORIGINS EDITION</span>
+        </a>
+        <a href="#join" class="nav-cta">Join FREE</a>
+    </nav>
+    <nav id="navbar-dark" class="nav-dark" aria-hidden="true">
         <a href="#" class="nav-logo">
             <span>THE ORIGINS EDITION</span>
         </a>
@@ -1099,14 +1201,24 @@
     </footer>
 
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        let lastScroll = 0;
+        // Navbar: shrink on scroll (both layers)
+        const navLight = document.getElementById('navbar');
+        const navDark = document.getElementById('navbar-dark');
         window.addEventListener('scroll', () => {
-            const currentScroll = window.scrollY;
-            navbar.classList.toggle('scrolled', currentScroll > 50);
-            lastScroll = currentScroll;
+            const scrolled = window.scrollY > 50;
+            navLight.classList.toggle('scrolled', scrolled);
+            navDark.classList.toggle('scrolled', scrolled);
         }, { passive: true });
+
+        // Navbar adaptive: crossfade to dark when hero leaves viewport
+        const heroSection = document.querySelector('.hero');
+        if (heroSection) {
+            new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    document.body.classList.toggle('nav-state-dark', !entry.isIntersecting);
+                });
+            }, { threshold: 0.15, rootMargin: '-20px 0px 0px 0px' }).observe(heroSection);
+        }
 
         // Scroll reveal with stagger
         const revealElements = document.querySelectorAll('.reveal');
