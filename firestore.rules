@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public can read published stories only; admin can read/write everything.
+    // Replace PASTE_ADMIN_UID with your Firebase Auth UID.
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == "YVhdpK9UglTwKCg1QlVl7SJTRmT2";
+    }
+    match /stories/{storyId} {
+      allow read: if isAdmin() || resource.data.status == "published";
+      // Allow list queries for published stories (needed for orderBy/pagination).
+      allow list: if true;
+      allow create, update, delete: if isAdmin()
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() < 150
+        && request.resource.data.imageUrl is string
+        && request.resource.data.status in ["published", "draft"];
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

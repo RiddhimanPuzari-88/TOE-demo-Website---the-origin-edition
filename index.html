@@ -1488,7 +1488,7 @@
         <div class="section-label reveal">Latest from TOE</div>
         <h2 class="section-title reveal">Stories & Insights</h2>
         <p class="section-desc reveal">Real stories from the founder trenches -- lessons, wins, and the truth behind the journey.</p>
-        <div class="posts-grid">
+        <div class="posts-grid" id="postsGrid">
             <div class="post-card reveal" style="grid-column: 1 / -1;">
                 <div class="post-image" style="height: 280px;">
                     <span class="post-tag">Collaboration</span>
@@ -1733,33 +1733,39 @@
             el.style.willChange = 'opacity, transform';
             revealObserver.observe(el);
         });
+        // Helpers for dynamic stories (stories.js calls these for newly added cards)
+        window.__toeReveal = (el) => revealObserver.observe(el);
 
         // Subtle tilt on post cards only (desktop, rAF-throttled, no fight with reveal)
         const finePointer = window.matchMedia('(pointer: fine)').matches;
         const reducedMotion = reduceMotionQuery.matches;
-        if (finePointer && !reducedMotion) {
-            document.querySelectorAll('.post-card').forEach(card => {
-                let raf = 0;
-                let tx = 0, ty = 0;
-                const apply = () => {
-                    raf = 0;
-                    card.style.transform = `perspective(900px) rotateX(${tx.toFixed(2)}deg) rotateY(${ty.toFixed(2)}deg) translateY(-4px)`;
-                };
-                card.addEventListener('mousemove', e => {
-                    if (card.classList.contains('reveal') && !card.classList.contains('visible')) return;
-                    const r = card.getBoundingClientRect();
-                    tx = ((e.clientY - r.top) / r.height - 0.5) * -4;
-                    ty = ((e.clientX - r.left) / r.width - 0.5) * 5;
-                    if (!raf) raf = requestAnimationFrame(apply);
-                    card.classList.add('tilting');
-                });
-                card.addEventListener('mouseleave', () => {
-                    if (raf) cancelAnimationFrame(raf);
-                    raf = 0;
-                    card.classList.remove('tilting');
-                    card.style.transform = '';
-                });
+        function attachTilt(card) {
+            if (card.__toeTiltAttached) return;
+            card.__toeTiltAttached = true;
+            let raf = 0;
+            let tx = 0, ty = 0;
+            const apply = () => {
+                raf = 0;
+                card.style.transform = `perspective(900px) rotateX(${tx.toFixed(2)}deg) rotateY(${ty.toFixed(2)}deg) translateY(-4px)`;
+            };
+            card.addEventListener('mousemove', e => {
+                if (card.classList.contains('reveal') && !card.classList.contains('visible')) return;
+                const r = card.getBoundingClientRect();
+                tx = ((e.clientY - r.top) / r.height - 0.5) * -4;
+                ty = ((e.clientX - r.left) / r.width - 0.5) * 5;
+                if (!raf) raf = requestAnimationFrame(apply);
+                card.classList.add('tilting');
             });
+            card.addEventListener('mouseleave', () => {
+                if (raf) cancelAnimationFrame(raf);
+                raf = 0;
+                card.classList.remove('tilting');
+                card.style.transform = '';
+            });
+        }
+        window.__toeTiltCard = attachTilt;
+        if (finePointer && !reducedMotion) {
+            document.querySelectorAll('.post-card').forEach(attachTilt);
         }
 
         // Smooth anchor scroll
@@ -1777,19 +1783,25 @@
             });
         });
 
-        // Toggle collapsible post content
+        // Toggle collapsible post content (kept for old inline onclick; stories.js also delegates via data-toggle)
         function togglePost(id, el) {
             const content = document.getElementById(id);
+            if (!content) return;
             const isExpanded = content.classList.contains('expanded');
             content.classList.toggle('expanded');
-            el.textContent = isExpanded ? 'Read Full Story' : 'Show Less';
-            if (!isExpanded) {
+            if (el) el.textContent = isExpanded ? 'Read Full Story' : 'Show Less';
+            if (!isExpanded && el) {
                 setTimeout(() => {
                     el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
             }
         }
     </script>
+    <!-- Dynamic Stories: Firebase (when configured) else local seed. Keep after main script so reveal/tilt helpers exist. -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="stories.js"></script>
 
 </body>
 </html>
