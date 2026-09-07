@@ -56,25 +56,29 @@
                 radial-gradient(1200px 600px at 15% -5%, rgba(233,179,30,0.10), transparent 60%),
                 radial-gradient(1000px 500px at 90% 8%, rgba(107,102,111,0.10), transparent 60%),
                 linear-gradient(180deg, var(--paper-1) 0%, var(--dark) 40%, var(--paper-3) 100%);
-            background-attachment: fixed;
+            /* perf: no background-attachment:fixed (full repaint on scroll) */
             color: var(--white);
             overflow-x: hidden;
+            overflow-x: clip;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Gold scroll progress */
+        /* Gold scroll progress — transform-only (no layout thrash) */
         .scroll-progress {
             position: fixed;
             top: 0;
             left: 0;
             height: 3px;
-            width: 0%;
+            width: 100%;
             background: linear-gradient(90deg, var(--gold-deep), var(--gold), var(--gold-light));
             box-shadow: 0 0 12px rgba(233,179,30,0.6);
             z-index: 2000;
+            transform: scaleX(0);
+            transform-origin: left center;
+            will-change: transform;
         }
 
-        /* Film-grain overlay for premium paper feel */
+        /* Film-grain overlay for premium paper feel — isolated, off on mobile */
         body::after {
             content: '';
             position: fixed;
@@ -82,6 +86,8 @@
             pointer-events: none;
             z-index: 1500;
             opacity: 0.05;
+            transform: translateZ(0);
+            contain: strict;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
@@ -98,23 +104,25 @@
             padding: 12px 28px;
         }
 
-        /* Shared bar layout */
+        /* Shared bar layout — cheap blur, own layer */
         nav.nav-light,
         nav.nav-dark {
             padding: 18px 28px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transform: translateZ(0);
+            contain: paint;
             transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Light layer (over hero) */
         nav.nav-light {
-            background: rgba(247, 247, 249, 0.72);
-            backdrop-filter: blur(24px) saturate(1.4);
-            -webkit-backdrop-filter: blur(24px) saturate(1.4);
+            background: rgba(247, 247, 249, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(26,26,26,0.08);
             box-shadow: 0 8px 32px rgba(26,26,26,0.06);
             color: var(--white);
@@ -205,13 +213,14 @@
                 linear-gradient(180deg, #FAFAFB 0%, #EFEFF2 55%, #E6E6EB 100%);
         }
 
-        /* Floating ambient orbs */
+        /* Floating ambient orbs — smaller blur, transform-only, pausable offscreen */
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(70px);
+            filter: blur(42px);
             pointer-events: none;
             will-change: transform;
+            contain: paint;
             z-index: 0;
         }
         .orb-gold {
@@ -220,7 +229,7 @@
             left: -120px;
             top: 8%;
             background: radial-gradient(circle, rgba(233,179,30,0.32), rgba(233,179,30,0) 70%);
-            animation: drift1 14s ease-in-out infinite alternate;
+            animation: drift1 16s ease-in-out infinite alternate;
         }
         .orb-peach {
             width: 520px;
@@ -228,7 +237,7 @@
             right: -140px;
             top: 22%;
             background: radial-gradient(circle, rgba(245,205,74,0.28), rgba(245,205,74,0) 70%);
-            animation: drift2 18s ease-in-out infinite alternate;
+            animation: drift2 20s ease-in-out infinite alternate;
         }
         .orb-lav {
             width: 620px;
@@ -237,16 +246,20 @@
             bottom: -280px;
             transform: translateX(-50%);
             background: radial-gradient(circle, rgba(107,102,111,0.20), transparent 70%);
-            animation: drift1 22s ease-in-out infinite alternate-reverse;
+            animation: drift1 24s ease-in-out infinite alternate-reverse;
+        }
+        .hero.orbs-paused .orb,
+        .hero.orbs-paused::before {
+            animation-play-state: paused;
         }
 
         @keyframes drift1 {
-            0% { transform: translate(0,0) scale(1); }
-            100% { transform: translate(60px,40px) scale(1.12); }
+            0% { transform: translate3d(0,0,0) scale(1); }
+            100% { transform: translate3d(40px,28px,0) scale(1.06); }
         }
         @keyframes drift2 {
-            0% { transform: translate(0,0) scale(1.05); }
-            100% { transform: translate(-70px,50px) scale(0.95); }
+            0% { transform: translate3d(0,0,0) scale(1.02); }
+            100% { transform: translate3d(-44px,32px,0) scale(0.98); }
         }
 
         .hero > *:not(.orb) {
@@ -266,14 +279,16 @@
             pointer-events: none;
             animation: heroGlow 8s ease-in-out infinite alternate;
             z-index: 0;
+            will-change: opacity;
+            contain: paint;
         }
 
         @keyframes heroGlow {
-            0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-            100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
         }
 
-        /* faint grid for structure */
+        /* faint grid for structure — own layer, static */
         .hero-grid {
             position: absolute;
             inset: 0;
@@ -285,15 +300,17 @@
             -webkit-mask-image: radial-gradient(700px 500px at 50% 35%, black 30%, transparent 75%);
             pointer-events: none;
             z-index: 0;
+            transform: translateZ(0);
+            contain: paint;
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 9px;
-            background: rgba(255,255,255,0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(233,179,30,0.35);
             box-shadow: 0 8px 32px rgba(233,179,30,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
             padding: 10px 26px;
@@ -304,7 +321,7 @@
             letter-spacing: 2.5px;
             text-transform: uppercase;
             margin-bottom: 36px;
-            animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .hero-logo {
@@ -313,13 +330,14 @@
             object-fit: contain;
             background: transparent;
             margin-bottom: 32px;
-            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both, floatSoft 7s ease-in-out 1.2s infinite;
-            filter: drop-shadow(0 0 40px rgba(233, 179, 30, 0.28)) drop-shadow(0 20px 60px rgba(26,26,26,0.12));
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both, floatSoft 8s ease-in-out 1.2s infinite;
+            filter: drop-shadow(0 12px 32px rgba(26,26,26,0.16));
+            will-change: transform;
         }
 
         @keyframes floatSoft {
-            0%,100% { translate: 0 0; }
-            50% { translate: 0 -12px; }
+            0%,100% { transform: translate3d(0,0,0); }
+            50% { transform: translate3d(0,-10px,0); }
         }
 
         .hero h1 {
@@ -333,7 +351,7 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
         }
 
         .hero h1 .gold {
@@ -343,7 +361,12 @@
             background-clip: text;
             color: transparent;
             position: relative;
-            animation: shineText 6s linear infinite;
+            animation: shineText 9s linear infinite;
+            /* perf: paused offscreen via JS (.shine-paused) */
+        }
+        .shine-paused .hero h1 .gold,
+        .shine-paused .price-free {
+            animation-play-state: paused;
         }
 
         @keyframes shineText {
@@ -357,7 +380,7 @@
             max-width: 560px;
             line-height: 1.8;
             margin: 28px auto 44px;
-            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
         }
 
         .hero-buttons {
@@ -365,7 +388,7 @@
             gap: 16px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
         }
 
         .btn-primary {
@@ -377,7 +400,7 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 16px;
-            transition: all 0.45s var(--ease-lux);
+            transition: transform 0.45s var(--ease-lux), box-shadow 0.45s var(--ease-lux), background-position 0.45s var(--ease-lux);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -391,12 +414,12 @@
             content: '';
             position: absolute;
             top: 0;
-            left: -80%;
+            left: 0;
             width: 60%;
             height: 100%;
             background: linear-gradient(100deg, transparent, rgba(255,255,255,0.65), transparent);
-            transform: skewX(-20deg);
-            transition: left 0.6s var(--ease-lux);
+            transform: translateX(-180%) skewX(-20deg);
+            transition: transform 0.6s var(--ease-lux);
         }
 
         .btn-primary:hover {
@@ -405,12 +428,12 @@
             box-shadow: 0 18px 45px rgba(233, 179, 30, 0.42), inset 0 1px 0 rgba(255,255,255,0.6);
         }
 
-        .btn-primary:hover::after { left: 130%; }
+        .btn-primary:hover::after { transform: translateX(280%) skewX(-20deg); }
 
         .btn-secondary {
-            background: rgba(255,255,255,0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: var(--gray-light);
             padding: 14px 34px;
             border-radius: 50px;
@@ -476,6 +499,10 @@
         }
 
         /* ===== SECTION CARDS (unified) ===== */
+        .benefits-section, .posts-section, .cta-section, .founder-section {
+            content-visibility: auto;
+            contain-intrinsic-size: auto 800px;
+        }
         .section-card {
             background: #FFFFFF;
             border: 1px solid rgba(233, 179, 30, 0.25);
@@ -485,7 +512,8 @@
             max-width: 1000px;
             margin: 0 auto;
             position: relative;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            contain: layout paint;
         }
 
         .section-card:hover {
@@ -533,6 +561,8 @@
             mask-image: radial-gradient(800px 500px at 50% 40%, black 20%, transparent 75%);
             -webkit-mask-image: radial-gradient(800px 500px at 50% 40%, black 20%, transparent 75%);
             pointer-events: none;
+            transform: translateZ(0);
+            contain: paint;
         }
 
         .benefits-section .section-title {
@@ -589,25 +619,26 @@
         .benefit-pill {
             position: relative;
             background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.14);
             border-radius: 50px;
             padding: 18px 36px;
             font-size: 16px;
             font-weight: 600;
             color: #f0f0f2;
-            transition: all 0.5s var(--ease-lux);
+            transition: background 0.5s var(--ease-lux), border-color 0.5s var(--ease-lux), transform 0.5s var(--ease-lux), box-shadow 0.5s var(--ease-lux);
             cursor: default;
             overflow: hidden;
             box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+            contain: paint;
         }
 
         .benefit-pill::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
             background: linear-gradient(
@@ -617,8 +648,10 @@
                 rgba(255, 255, 255, 0.04),
                 transparent
             );
-            width: 100%;
-            animation: shimmer 8s ease-in-out infinite;
+            transform: translateX(-150%);
+            opacity: 0;
+            animation: shimmer 9s ease-in-out infinite;
+            will-change: transform, opacity;
         }
 
         .benefit-pill:nth-child(1)::before { animation-delay: 0s; }
@@ -644,10 +677,13 @@
         }
 
         @keyframes shimmer {
-            0%, 100% { left: -100%; opacity: 0; }
+            0%, 100% { transform: translateX(-150%); opacity: 0; }
             8% { opacity: 1; }
-            40% { left: 100%; opacity: 0; }
-            100% { opacity: 0; }
+            40% { transform: translateX(150%); opacity: 0; }
+            100% { transform: translateX(150%); opacity: 0; }
+        }
+        .benefits-paused .benefit-pill::before {
+            animation-play-state: paused;
         }
 
         /* ===== GOLD DIVIDER ===== */
@@ -705,9 +741,13 @@
             border: 1px solid rgba(233, 179, 30, 0.22);
             border-radius: 26px;
             overflow: hidden;
-            transition: all 0.6s var(--ease-lux);
+            transition: border-color 0.5s var(--ease-lux), box-shadow 0.5s var(--ease-lux), transform 0.5s var(--ease-lux);
             position: relative;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+            contain: layout paint;
+        }
+        .post-card.tilting {
+            transition: border-color 0.5s var(--ease-lux), box-shadow 0.5s var(--ease-lux);
             will-change: transform;
         }
 
@@ -767,9 +807,9 @@
             position: absolute;
             top: 16px;
             left: 16px;
-            background: rgba(10,10,10,0.55);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(10,10,10,0.68);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: var(--gold-light);
             border: 1px solid rgba(233,179,30,0.35);
             padding: 7px 18px;
@@ -779,7 +819,6 @@
             letter-spacing: 1.5px;
             text-transform: uppercase;
             z-index: 1;
-            backdrop-filter: blur(10px);
         }
 
         .post-content {
@@ -818,7 +857,7 @@
             font-weight: 600;
             text-decoration: none;
             margin-top: 18px;
-            transition: all 0.3s ease;
+            transition: gap 0.3s ease, color 0.3s ease;
         }
 
         .read-more:hover {
@@ -863,12 +902,14 @@
             height: 780px;
             background: radial-gradient(circle, rgba(233, 179, 30, 0.20) 0%, transparent 70%);
             pointer-events: none;
-            animation: ctaGlow 6s ease-in-out infinite alternate;
+            animation: ctaGlow 7s ease-in-out infinite alternate;
+            will-change: opacity;
+            contain: paint;
         }
 
         @keyframes ctaGlow {
-            0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
-            100% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
         }
 
         .cta-section::after {
@@ -924,12 +965,10 @@
             font-weight: 900;
             line-height: 1;
             background: linear-gradient(100deg, #B8860B, var(--gold) 35%, #FFE58A 50%, var(--gold) 65%, #B8860B);
-            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: shineText 5s linear infinite;
-            filter: drop-shadow(0 6px 20px rgba(233,179,30,0.28));
+            /* perf: static gradient — no infinite shine repaint */
         }
 
         .cta-details {
@@ -956,23 +995,35 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 15.5px;
-            transition: all 0.45s var(--ease-lux);
+            transition: transform 0.45s var(--ease-lux), box-shadow 0.45s var(--ease-lux), background-position 0.45s var(--ease-lux);
             box-shadow: 0 12px 32px rgba(37, 211, 102, 0.32), inset 0 1px 0 rgba(255,255,255,0.35);
             position: relative;
-            animation: pulseGreen 2.8s ease-in-out infinite;
+            isolation: isolate;
+        }
+        .whatsapp-btn::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: rgba(37,211,102,0.35);
+            filter: blur(18px);
+            opacity: 0.35;
+            z-index: -1;
+            animation: pulseGlowOpacity 3.4s ease-in-out infinite;
+            will-change: opacity;
         }
 
-        @keyframes pulseGreen {
-            0%,100% { box-shadow: 0 12px 32px rgba(37,211,102,0.32), 0 0 0 0 rgba(37,211,102,0.35); }
-            50% { box-shadow: 0 16px 40px rgba(37,211,102,0.42), 0 0 0 14px rgba(37,211,102,0); }
+        @keyframes pulseGlowOpacity {
+            0%,100% { opacity: 0.22; }
+            50% { opacity: 0.45; }
         }
 
         .whatsapp-btn:hover {
             transform: translateY(-3px) scale(1.03);
             background-position: 90% 50%;
             box-shadow: 0 18px 48px rgba(37, 211, 102, 0.42);
-            animation: none;
         }
+        .whatsapp-btn:hover::before { animation: none; opacity: 0.3; }
 
         .whatsapp-btn svg {
             width: 20px;
@@ -1010,12 +1061,14 @@
 
         .founder-card {
             background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(233, 179, 30, 0.24);
             box-shadow: 0 28px 90px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
             max-width: 1000px;
             padding: 46px;
+            transform: translateZ(0);
+            contain: layout paint;
         }
 
         .founder-container {
@@ -1038,7 +1091,7 @@
             object-position: top;
             border-radius: 20px;
             border: 1px solid rgba(233, 179, 30, 0.22);
-            transition: all 0.6s var(--ease-lux);
+            transition: border-color 0.6s var(--ease-lux), transform 0.6s var(--ease-lux), box-shadow 0.6s var(--ease-lux);
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
@@ -1149,7 +1202,7 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: all 0.35s var(--ease-lux);
+            transition: color 0.35s var(--ease-lux);
             position: relative;
         }
 
@@ -1177,41 +1230,38 @@
             letter-spacing: 0.5px;
         }
 
-        /* ===== ANIMATIONS ===== */
+        /* ===== ANIMATIONS — transform+opacity only (no blur = smooth scroll) ===== */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(38px); filter: blur(6px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            from { opacity: 0; transform: translateY(28px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-28px); filter: blur(6px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.94) translateY(12px); filter: blur(8px); }
-            to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .reveal {
             opacity: 0;
-            transform: translateY(36px) scale(0.98);
-            filter: blur(8px);
-            transition: opacity 1s var(--ease-lux), transform 1s var(--ease-lux), filter 1s var(--ease-lux);
-            will-change: opacity, transform, filter;
+            transform: translateY(24px);
+            transition: opacity 0.7s var(--ease-lux), transform 0.7s var(--ease-lux);
         }
 
         .reveal.visible {
             opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: blur(0);
+            transform: translateY(0);
         }
 
         .reveal-delay-1 { transition-delay: 0.1s; }
         .reveal-delay-2 { transition-delay: 0.2s; }
         .reveal-delay-3 { transition-delay: 0.3s; }
 
-        /* Nav CTA shimmer */
+        /* Nav CTA shimmer — transform-only sweep */
         .nav-cta {
             position: relative;
             overflow: hidden;
@@ -1220,18 +1270,18 @@
             content: '';
             position: absolute;
             top: 0;
-            left: -70%;
+            left: 0;
             width: 50%;
             height: 100%;
             background: linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent);
-            transform: skewX(-20deg);
+            transform: translateX(-160%) skewX(-20deg);
         }
         .nav-cta:hover::after {
             animation: btnSweep 0.7s var(--ease-lux);
         }
         @keyframes btnSweep {
-            0% { left: -70%; }
-            100% { left: 130%; }
+            0% { transform: translateX(-160%) skewX(-20deg); }
+            100% { transform: translateX(360%) skewX(-20deg); }
         }
 
         /* Read more link underline animation */
@@ -1263,15 +1313,37 @@
                 transition-duration: 0.01ms !important;
             }
             html { scroll-behavior: auto; }
+            .orb, .hero::before, .cta-section::before, .benefit-pill::before, .whatsapp-btn::before {
+                animation: none !important;
+            }
+            .reveal { opacity: 1; transform: none; }
         }
 
-        /* ===== RESPONSIVE ===== */
+        /* ===== RESPONSIVE + PERFORMANCE FAST-PATH ===== */
         @media (max-width: 768px) {
+            body::after { display: none; }
+            nav.nav-light, nav.nav-dark {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background: rgba(247,247,249,0.94);
+            }
+            body.nav-state-dark nav.nav-dark {
+                background: rgba(10,10,10,0.94);
+            }
+            .benefit-pill, .post-tag, .founder-card, .hero-badge, .btn-secondary {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+            .orb, .hero::before, .cta-section::before, .benefit-pill::before,
+            .whatsapp-btn::before, .hero-logo, .hero h1 .gold {
+                animation: none !important;
+            }
+            .hero-logo { filter: none; }
             .section-card {
                 padding: 32px 22px;
             }
 
-            .orb-gold, .orb-peach { width: 320px; height: 320px; filter: blur(60px); }
+            .orb-gold, .orb-peach { width: 320px; height: 320px; }
             .orb-lav { width: 380px; height: 380px; }
 
             .cta-card { padding: 20px 16px; }
@@ -1376,7 +1448,7 @@
         <div class="orb orb-peach"></div>
         <div class="orb orb-lav"></div>
         <div class="hero-badge">&#9733; INVITE-ONLY FOUNDERS COMMUNITY</div>
-        <img src="TOE LOGO.png" alt="The Origins Edition" class="hero-logo">
+        <img src="TOE LOGO.png" alt="The Origins Edition" class="hero-logo" fetchpriority="high" decoding="async">
         <p class="subtitle">A global stage celebrating the real beginnings of founders, their grit, growth, and the stories behind their success.</p>
         <div class="hero-buttons">
             <a href="https://chat.whatsapp.com/BTWGEfhYc0MG72Zgt7x3Oe" target="_blank" class="btn-primary">
@@ -1420,7 +1492,7 @@
             <div class="post-card reveal" style="grid-column: 1 / -1;">
                 <div class="post-image" style="height: 280px;">
                     <span class="post-tag">Collaboration</span>
-                    <img src="image.png" alt="TOE x Finvayu Collaboration" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 0;">
+                    <img src="image.png" alt="TOE x Finvayu Collaboration" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 0;">
                 </div>
                 <div class="post-content">
                     <div class="post-date">Aug 25, 2026</div>
@@ -1433,7 +1505,7 @@
             </div>
             <div class="post-card reveal" style="grid-column: 1 / -1;">
                 <div class="post-image" style="height: 320px; background: #DADAE0;">
-                    <img src="image copy.png" alt="Trishala Kachhara - Studio 11" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
+                    <img src="image copy.png" alt="Trishala Kachhara - Studio 11" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
                 </div>
                 <div class="post-content">
                     <div class="post-date">Aug 22, 2026</div>
@@ -1457,7 +1529,7 @@
             </div>
             <div class="post-card reveal" style="grid-column: 1 / -1;">
                 <div class="post-image" style="height: 320px; background: #DADAE0;">
-                    <img src="image copy 2.png" alt="Sana M - 11 Failures" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
+                    <img src="image copy 2.png" alt="Sana M - 11 Failures" loading="lazy" decoding="async" style="width: 100%; height: 100%; object-fit: cover; object-position: top; position: relative; z-index: 0;">
                 </div>
                 <div class="post-content">
                     <div class="post-date">Aug 18, 2026</div>
@@ -1518,7 +1590,7 @@
         <div class="section-card founder-card reveal">
             <div class="founder-container">
                 <div class="founder-photo-wrapper reveal">
-                    <img src="Founder photo.png" alt="Pradeep Mandol" class="founder-photo" style="object-position: top center;">
+                    <img src="Founder photo.png" alt="Pradeep Mandol" class="founder-photo" loading="lazy" decoding="async" style="object-position: top center;">
                 </div>
                 <div class="founder-info reveal">
                     <h2>Pradeep Mandol</h2>
@@ -1535,7 +1607,7 @@
 
     <!-- FOOTER -->
     <footer>
-        <img src="TOE LOGO.png" alt="TOE" class="footer-logo">
+        <img src="TOE LOGO.png" alt="TOE" class="footer-logo" loading="lazy" decoding="async">
         <div class="footer-name">Pradeep Mandol (Prad)</div>
         <div class="footer-role">Co-Founder -- The Origins Edition</div>
         <div class="footer-links">
@@ -1549,48 +1621,80 @@
     </footer>
 
     <script>
-        // Navbar: shrink on scroll (both layers) + scroll progress + parallax (rAF batched)
+        // Navbar: shrink on scroll + transform-only progress + cheap parallax (rAF batched, pauses offscreen)
         const navLight = document.getElementById('navbar');
         const navDark = document.getElementById('navbar-dark');
         const progressBar = document.getElementById('scrollProgress');
         const heroEl = document.querySelector('.hero');
         const orbs = document.querySelectorAll('.orb');
+        const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         let ticking = false;
+        let heroVisible = true;
+        let lastY = 0;
 
         function onScrollFrame() {
-            const y = window.scrollY;
+            const y = lastY;
             const scrolled = y > 50;
             navLight.classList.toggle('scrolled', scrolled);
             navDark.classList.toggle('scrolled', scrolled);
 
-            // Gold progress
+            // Gold progress — transform only, no layout
             const h = document.documentElement.scrollHeight - window.innerHeight;
             if (progressBar && h > 0) {
-                progressBar.style.width = (y / h * 100).toFixed(2) + '%';
+                const p = Math.min(Math.max(y / h, 0), 1);
+                progressBar.style.transform = `scaleX(${p.toFixed(4)})`;
             }
 
-            // Hero parallax: content drifts, orbs drift at different speeds (smooth, no opacity kill)
-            if (heroEl && y < window.innerHeight * 1.2) {
-                heroEl.style.setProperty('--par', Math.min(y / window.innerHeight, 1).toFixed(3));
+            // Hero parallax: only when visible + motion OK, transform3d only
+            if (heroEl && heroVisible && !reduceMotionQuery.matches && y < window.innerHeight * 1.2) {
                 orbs.forEach((o, i) => {
-                    const speed = 0.08 + i * 0.06;
-                    o.style.translate = `0 ${y * speed}px`;
+                    const speed = 0.06 + i * 0.04;
+                    o.style.transform = `translate3d(0, ${(y * speed).toFixed(1)}px, 0)`;
                 });
             }
             ticking = false;
         }
 
         window.addEventListener('scroll', () => {
+            lastY = window.scrollY;
             if (!ticking) {
                 requestAnimationFrame(onScrollFrame);
                 ticking = true;
             }
         }, { passive: true });
+        lastY = window.scrollY;
         onScrollFrame();
+
+        // Pause costly anims offscreen: orbs, shine, shimmer
+        const benefitsSection = document.querySelector('.benefits-section');
+        if ('IntersectionObserver' in window) {
+            if (heroEl) {
+                new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        heroVisible = entry.isIntersecting;
+                        heroEl.classList.toggle('orbs-paused', !entry.isIntersecting);
+                        document.body.classList.toggle('shine-paused', !entry.isIntersecting);
+                        if (!entry.isIntersecting) {
+                            orbs.forEach(o => { o.style.transform = ''; });
+                        } else {
+                            lastY = window.scrollY;
+                            if (!ticking) { requestAnimationFrame(onScrollFrame); ticking = true; }
+                        }
+                    });
+                }, { threshold: 0 }).observe(heroEl);
+            }
+            if (benefitsSection) {
+                new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        benefitsSection.classList.toggle('benefits-paused', !entry.isIntersecting);
+                    });
+                }, { threshold: 0 }).observe(benefitsSection);
+            }
+        }
 
         // Navbar adaptive: crossfade to dark when hero leaves viewport
         const heroSection = document.querySelector('.hero');
-        if (heroSection) {
+        if (heroSection && 'IntersectionObserver' in window) {
             new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     document.body.classList.toggle('nav-state-dark', !entry.isIntersecting);
@@ -1598,7 +1702,7 @@
             }, { threshold: 0.15, rootMargin: '-20px 0px 0px 0px' }).observe(heroSection);
         }
 
-        // Scroll reveal with stagger + auto-delay for grids
+        // Scroll reveal — opacity+transform only, free layers after reveal
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
@@ -1606,27 +1710,53 @@
                     // stagger siblings for buttery cascade
                     const siblings = Array.from(entry.target.parentElement?.children || []).filter(c => c.classList?.contains('reveal'));
                     const idx = Math.max(siblings.indexOf(entry.target), 0);
-                    entry.target.style.transitionDelay = Math.min(idx * 0.08, 0.5) + 's';
+                    entry.target.style.transitionDelay = Math.min(idx * 0.06, 0.3) + 's';
                     entry.target.classList.add('visible');
+                    const done = (e) => {
+                        if (e.propertyName === 'transform') {
+                            entry.target.style.willChange = 'auto';
+                            entry.target.style.transitionDelay = '';
+                            entry.target.removeEventListener('transitionend', done);
+                        }
+                    };
+                    entry.target.addEventListener('transitionend', done);
+                    // fallback cleanup in case transitionend misses
+                    setTimeout(() => {
+                        entry.target.style.willChange = 'auto';
+                    }, 1200);
                     revealObserver.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
 
-        revealElements.forEach(el => revealObserver.observe(el));
+        revealElements.forEach(el => {
+            el.style.willChange = 'opacity, transform';
+            revealObserver.observe(el);
+        });
 
-        // Subtle 3D tilt on post cards (desktop only, respects reduced-motion)
+        // Subtle tilt on post cards only (desktop, rAF-throttled, no fight with reveal)
         const finePointer = window.matchMedia('(pointer: fine)').matches;
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const reducedMotion = reduceMotionQuery.matches;
         if (finePointer && !reducedMotion) {
-            document.querySelectorAll('.post-card, .founder-card').forEach(card => {
+            document.querySelectorAll('.post-card').forEach(card => {
+                let raf = 0;
+                let tx = 0, ty = 0;
+                const apply = () => {
+                    raf = 0;
+                    card.style.transform = `perspective(900px) rotateX(${tx.toFixed(2)}deg) rotateY(${ty.toFixed(2)}deg) translateY(-4px)`;
+                };
                 card.addEventListener('mousemove', e => {
+                    if (card.classList.contains('reveal') && !card.classList.contains('visible')) return;
                     const r = card.getBoundingClientRect();
-                    const rx = ((e.clientY - r.top) / r.height - 0.5) * -5;
-                    const ry = ((e.clientX - r.left) / r.width - 0.5) * 6;
-                    card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) translateY(-4px)`;
+                    tx = ((e.clientY - r.top) / r.height - 0.5) * -4;
+                    ty = ((e.clientX - r.left) / r.width - 0.5) * 5;
+                    if (!raf) raf = requestAnimationFrame(apply);
+                    card.classList.add('tilting');
                 });
                 card.addEventListener('mouseleave', () => {
+                    if (raf) cancelAnimationFrame(raf);
+                    raf = 0;
+                    card.classList.remove('tilting');
                     card.style.transform = '';
                 });
             });
