@@ -330,9 +330,16 @@
             object-fit: contain;
             background: transparent;
             margin-bottom: 32px;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both, floatSoft 8s ease-in-out 1.2s infinite;
+            animation: logoReveal 1.3s var(--ease-lux) 0.1s both, floatSoft 8s ease-in-out 1.6s infinite;
             filter: drop-shadow(0 12px 32px rgba(26,26,26,0.16));
             will-change: transform;
+        }
+
+        /* Cinematic first-open logo entrance — transform + opacity only (scroll-safe) */
+        @keyframes logoReveal {
+            0% { opacity: 0; transform: translate3d(0, 44px, 0) scale(0.82); }
+            60% { opacity: 1; transform: translate3d(0, -6px, 0) scale(1.015); }
+            100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
         }
 
         @keyframes floatSoft {
@@ -1335,10 +1342,11 @@
                 -webkit-backdrop-filter: none;
             }
             .orb, .hero::before, .cta-section::before, .benefit-pill::before,
-            .whatsapp-btn::before, .hero-logo, .hero h1 .gold {
+            .whatsapp-btn::before, .hero h1 .gold {
                 animation: none !important;
             }
-            .hero-logo { filter: none; }
+            /* Mobile keeps the logo entrance, drops only the infinite float */
+            .hero-logo { animation: logoReveal 1s var(--ease-lux) 0.05s both; filter: none; }
             .section-card {
                 padding: 32px 22px;
             }
