@@ -128,17 +128,28 @@
     if (grid) grid.innerHTML = html;
   }
 
-  async function loadFromFirebase() {
-    const cfg = window.TOE_FIREBASE_CONFIG;
-    if (!window.TOE_USE_FIREBASE || !cfg || String(cfg.apiKey || '').startsWith('PASTE')) return null;
-    if (!window.firebase || !firebase.firestore) return null;
-    if (!firebase.apps.length) firebase.initializeApp(cfg);
-    const db = firebase.firestore();
-    const snap = await db.collection('stories')
-      .where('status', '==', 'published')
-      .orderBy('publishedAt', 'desc')
-      .limit(50)
-      .get();
+  // Diagnostic status for debugging (see ?debug=stories or window.__toeStoriesStatus).
+  // The site silently falls back to seed data when Firestore reads fail —
+  // this records WHY so a blocked API key / missing index / denied rule is visible.
+  window.__toeStoriesStatus = { phase: 'init', error: null, source: null };
+
+  function reportError(stage, err) {
+    const code = err && (err.code || err.name) || 'unknown';
+    const msg = err && (err.message || String(err)) || 'unknown error';
+    window.__toeStoriesStatus = { phase: stage, error: code + ': ' + msg, source: null };
+    if (window.console && console.error) {
+      console.error('[TOE stories][' + stage + '][' + code + '] ' + msg);
+      if (/referer|blocked|403|API key/i.test(msg)) {
+        console.error('[TOE stories] FIX: add this domain to Google Cloud API-key HTTP referrers + Firebase Auth authorized domains.');
+      } else if (/failed-precondition|index/i.test(msg)) {
+        console.error('[TOE stories] FIX: Firestore needs a composite index for where(status)+orderBy(publishedAt) — open the index link in this error, Create it, wait 2 min.');
+      } else if (/permission|denied|unauthorized/i.test(msg)) {
+        console.error('[TOE stories] FIX: publish firestore.rules with your ADMIN_UID in the Firebase console.');
+      }
+    }
+  }
+
+  function snapToStories(snap) {
     const out = [];
     snap.forEach(d => {
       const v = d.data();
@@ -159,8 +170,43 @@
         status: v.status || 'published'
       });
     });
-    try { localStorage.setItem('toe-stories-cache', JSON.stringify({ t: Date.now(), stories: out })); } catch (e) {}
     return out;
+  }
+
+  async function loadFromFirebase() {
+    const cfg = window.TOE_FIREBASE_CONFIG;
+    if (!window.TOE_USE_FIREBASE || !cfg || String(cfg.apiKey || '').startsWith('PASTE')) return null;
+    if (!window.firebase || !firebase.firestore) return null;
+    if (!firebase.apps.length) firebase.initializeApp(cfg);
+    const db = firebase.firestore();
+    try {
+      const snap = await db.collection('stories')
+        .where('status', '==', 'published')
+        .orderBy('publishedAt', 'desc')
+        .limit(50)
+        .get();
+      const out = snapToStories(snap);
+      window.__toeStoriesStatus = { phase: 'firebase', error: null, source: 'firestore' };
+      try { localStorage.setItem('toe-stories-cache', JSON.stringify({ t: Date.now(), stories: out })); } catch (e) {}
+      return out;
+    } catch (err) {
+      reportError('firebase-query', err);
+      // Self-heal: composite index for where()+orderBy() often missing on fresh
+      // projects — retry index-free and filter published client-side.
+      try {
+        const snap = await db.collection('stories')
+          .orderBy('publishedAt', 'desc')
+          .limit(50)
+          .get();
+        const out = snapToStories(snap).filter(s => s.status === 'published');
+        window.__toeStoriesStatus = { phase: 'firebase-fallback-query', error: null, source: 'firestore' };
+        try { localStorage.setItem('toe-stories-cache', JSON.stringify({ t: Date.now(), stories: out })); } catch (e) {}
+        return out;
+      } catch (err2) {
+        reportError('firebase-fallback-query', err2);
+        return null;
+      }
+    }
   }
 
   async function loadFromSeed() {
@@ -218,16 +264,27 @@
     showState(`<div style="grid-column:1/-1;color:var(--d-text3);padding:40px 0;">Loading stories…</div>`);
 
     let stories = null;
-    try { stories = await loadFromFirebase(); } catch (e) { stories = null; }
+    let storesrc = null;
+    try {
+      stories = await loadFromFirebase();
+      if (stories && stories.length) storesrc = window.__toeStoriesStatus.source;
+    } catch (e) { reportError('firebase-top', e); stories = null; }
     if (!stories || !stories.length) {
       const seed = await loadFromSeed();
-      if (seed && seed.length) stories = seed;
+      if (seed && seed.length) { stories = seed; storesrc = 'seed/cache'; }
+    }
+    // Debug mode (?debug=stories): reveal the exact Firestore failure instead of
+    // silently showing seed data — send us the red line to fix console-side blocks.
+    const debugMode = /[?&]debug=stories/.test(window.location.search || '');
+    let debugBanner = '';
+    if (debugMode && window.__toeStoriesStatus.error) {
+      debugBanner = `<div style="grid-column:1/-1;color:#ffb3b3;background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.4);border-radius:14px;padding:18px 20px;font-size:13px;line-height:1.7;">Firestore read failed, showing fallback data.<br><code>${escapeHTML(window.__toeStoriesStatus.error)}</code><br>Fix: allowlist this domain on the API key + Auth authorized domains, or create the composite index from the Console error link.</div>`;
     }
     if (!stories || !stories.length) {
       // Keep the hardcoded HTML already on the page (no blank section).
       const hard = readHardcodedFallback();
       if (hard.length && hard[0]._html) {
-        showState(hard.map(h => h._html).join(''));
+        showState(debugBanner + hard.map(h => h._html).join(''));
         observeNewCards(grid);
         return;
       }
@@ -237,8 +294,11 @@
 
     allStories = stories;
     shown = 0;
-    showState('');
+    showState(debugBanner);
     renderMore();
+    if (debugBanner) {
+      window.__toeStoriesStatus.source = storesrc;
+    }
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
