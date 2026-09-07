@@ -1,6 +1,11 @@
 # TOE — Dynamic Stories Setup (Firebase text + Cloudinary images)
 
-Public site (`index.html`) reads published stories. Dashboard (`admin.html`) only asks for image + text.
+Public site (`site/index.html`) reads published stories. Dashboard (`admin/index.html`, separate Vercel project) only asks for image + text. Same Firebase/Cloudinary data, disconnected URLs.
+
+## Repo layout
+- `site/` → main website Vercel project (Root Directory `site`). No admin files, no admin links.
+- `admin/` → dashboard Vercel project (Root Directory `admin`). Own URL, `noindex` + `no-store` headers.
+- `site/firebase-config.js` and `admin/firebase-config.js` are copies — keep `TOE_FIREBASE_CONFIG`, `TOE_ADMIN_UID`, `TOE_CLOUDINARY` in sync when keys change.
 
 ## 1) Firebase (text + login only, no Storage needed)
 1. https://console.firebase.google.com → Add project (no Analytics needed).
@@ -17,9 +22,14 @@ Public site (`index.html`) reads published stories. Dashboard (`admin.html`) onl
 3. Open `firebase-config.js` → set `TOE_CLOUDINARY = { cloudName, uploadPreset: "toe-stories", folder: "toe-stories" }`.
 
 ## 4) Wire the site
-1. Firebase → Project settings → Web app → copy `firebaseConfig` → paste into `firebase-config.js`, set `TOE_ADMIN_UID`, set `TOE_USE_FIREBASE = true`.
-2. Open `admin.html` → Login → **Import seed stories**.
-3. Open `index.html` → Stories load newest-first. URL paste works even before Cloudinary is set.
+1. Firebase → Project settings → Web app → copy `firebaseConfig` → paste into BOTH `site/firebase-config.js` and `admin/firebase-config.js`, set `TOE_ADMIN_UID`, set `TOE_USE_FIREBASE = true`.
+2. Open admin project URL → Login → **Import seed stories**.
+3. Open main site URL → Stories load newest-first. URL paste works even before Cloudinary is set.
+
+## 4b) Vercel — two projects, one repo
+1. Main project (existing): Settings → General → Root Directory → `site` → Save (auto-redeploys). Main domain serves only the website; `/admin.html` stops existing there.
+2. New project: Add New → Project → same GitHub repo → Root Directory `admin` → Deploy. Bookmark its `*.vercel.app` URL — that is the only admin entry.
+3. Firebase Auth → Authorized domains → add BOTH hostnames. Google Cloud API key referrers → add `https://<main>/*` + `https://<admin>/*` + localhost.
 
 ## 5) Daily use (admin — image + text only)
 - `admin.html` → **+ New story** → Title → Story text (blank line = new para, first 2 show before Read More) → Cover image (upload or paste URL) → Publish → Save.
