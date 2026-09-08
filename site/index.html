@@ -1347,11 +1347,12 @@
                 backdrop-filter: none;
                 -webkit-backdrop-filter: none;
             }
-            .orb, .hero::before, .cta-section::before, .benefit-pill::before,
+            .orb, .hero::before, .cta-section::before,
             .whatsapp-btn::before, .hero h1 .gold,
             .hero-logo-wrap, .hero-logo-wrap::before, .hero-logo-wrap::after {
                 animation: none !important;
             }
+            /* Capsule shimmer stays on for mobile (cheap transform-only, pauses offscreen) */
             /* Mobile keeps the logo entrance, drops only the infinite float */
             .hero-logo-wrap { width: 280px; height: 280px; }
             .hero-logo { animation: logoReveal 1s var(--ease-lux) 0.05s both; filter: brightness(2.4) contrast(1.05); }
