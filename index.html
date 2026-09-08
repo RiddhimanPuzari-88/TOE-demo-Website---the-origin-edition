@@ -589,31 +589,165 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: flex-start;
             gap: 18px;
             max-width: 760px;
             margin: 0 auto;
         }
 
-        .benefits-note {
-            max-width: 680px;
-            margin: 36px auto 0;
+        .benefit-pill {
+            text-align: left;
+        }
+
+        .perk-head {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0;
+            background: none;
+            border: 0;
+            color: inherit;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .perk-title {
+            flex: 1;
+        }
+
+        .perk-plus {
+            color: var(--gold-light);
+            font-size: 20px;
+            font-weight: 400;
+            line-height: 1;
+            margin-left: 14px;
+            transition: transform 0.45s var(--ease-lux);
+        }
+
+        .benefit-pill.open .perk-plus {
+            transform: rotate(45deg);
+        }
+
+        .perk-body {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.55s var(--ease-lux), opacity 0.45s ease, margin 0.45s ease;
+        }
+
+        .perk-body p {
+            color: var(--d-text2);
+            font-size: 14.5px;
+            font-weight: 400;
+            line-height: 1.8;
+            margin: 0 0 10px;
+        }
+
+        .perk-body p:last-child {
+            margin-bottom: 2px;
+        }
+
+        .benefit-pill.open {
+            flex: 1 1 100%;
+            border-color: rgba(242,194,48,0.55);
+        }
+
+        .benefit-pill.open .perk-body {
+            max-height: 420px;
+            opacity: 1;
+            margin-top: 14px;
+        }
+
+        .services-sub {
+            color: var(--gold-light);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin: 0 auto 34px;
+        }
+
+        .services-best {
+            max-width: 640px;
+            margin: 48px auto 0;
+            text-align: center;
+        }
+
+        .services-best p {
+            color: var(--d-text2);
+            font-size: 15.5px;
+            line-height: 1.85;
+            margin-bottom: 16px;
+        }
+
+        .services-best strong {
+            color: #FFFFFF;
+        }
+
+        .services-bestline {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: clamp(18px, 3vw, 22px);
-            line-height: 1.8;
-            background:
-                repeating-linear-gradient(115deg, transparent 0 18px, rgba(255,255,255,0.38) 18px 26px, transparent 26px 44px),
-                linear-gradient(100deg, #C9970D 0%, var(--gold) 35%, #FFE58A 50%, var(--gold) 65%, #C9970D 100%);
-            background-size: auto, 200% auto;
+            font-size: clamp(20px, 3.4vw, 26px);
+            color: var(--gold-light);
+        }
+
+        .services-prices {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 26px 0;
+        }
+
+        .services-price {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 18px 34px;
+            min-width: 220px;
+        }
+
+        .services-price span {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--d-text3);
+            margin-bottom: 8px;
+        }
+
+        .services-price strong {
+            font-family: 'Playfair Display', serif;
+            font-size: 34px;
+            font-weight: 900;
+        }
+
+        .services-price.old strong {
+            color: #66666E;
+            text-decoration: line-through;
+            font-size: 26px;
+        }
+
+        .services-price.new {
+            border-color: rgba(242,194,48,0.45);
+        }
+
+        .services-price.new strong {
+            background: linear-gradient(100deg, #C9970D 0%, var(--gold) 35%, #FFE58A 50%, var(--gold) 65%, #C9970D 100%);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            animation: noteWave 4s linear infinite;
+            animation: shineText 6s linear infinite;
         }
 
-        @keyframes noteWave {
-            0% { background-position: 0 0, 0% center; }
-            100% { background-position: 176px 0, 200% center; }
+        .services-close {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(17px, 2.8vw, 21px);
+            color: var(--d-text);
+            margin-top: 26px;
         }
 
         .benefit-pill {
@@ -1529,15 +1663,87 @@
             <h2 class="section-title reveal">What You Get</h2>
             <p class="section-desc reveal" style="margin-bottom: 36px;">Join 1,000 serious founders and unlock access to premium benefits -- completely free.</p>
             <div class="benefits-grid">
-                <div class="benefit-pill reveal"><span class="tick">✓</span>Elite Network</div>
-                <div class="benefit-pill reveal"><span class="tick">✓</span>LinkedIn Feature & Cover Page</div>
-                <div class="benefit-pill reveal"><span class="tick">✓</span>Business Opportunities</div>
-                <div class="benefit-pill reveal"><span class="tick">✓</span>Official Website Article</div>
-                <div class="benefit-pill reveal"><span class="tick">✓</span>Tools Access</div>
-                <div class="benefit-pill reveal"><span class="tick">✓</span>META & LinkedIn Branding</div>
-                <div class="benefit-pill reveal"><span class="tick">✓</span>And Many More...</div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Elite Network</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Get access to a curated circle of ambitious founders, leaders, investors and decision-makers.</p><p>Build relationships that can turn into collaborations, referrals, partnerships and opportunities.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">LinkedIn Feature & Cover Page</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Get your founder story, business or achievements featured across our LinkedIn ecosystem.</p><p>Build credibility, visibility and authority in front of a relevant professional audience.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Business Opportunities</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Get access to relevant business leads, referrals, partnerships and collaboration opportunities shared within the network.</p><p>Because the right introduction can sometimes be worth more than a hundred cold messages.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Official Website Article</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Get your founder/business story published as an official article on our website.</p><p>A powerful credibility asset you can share with prospects, partners and investors.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Tools Access</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Access useful tools, resources and founder-focused assets that help you save time and grow smarter.</p><p>Less searching. More building.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">META & LinkedIn Branding</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Get guidance and support to build a stronger, more consistent presence across Meta and LinkedIn.</p><p>Make your personal brand look as serious as the business you're building.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">And Many More...</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>From introductions to visibility, knowledge-sharing and unexpected opportunities.</p><p>You never really know what the next conversation inside the network can unlock.</p></div>
+                </div>
             </div>
-            <p class="benefits-note reveal">Plus exclusive services from other founders within the same community at a discounted price.</p>
+        </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="benefits-section" id="services">
+        <div class="section-card benefits-card reveal">
+            <div class="section-label reveal">Member Services</div>
+            <h2 class="section-title reveal">Exclusive Member Services</h2>
+            <p class="section-desc reveal" style="margin-bottom: 20px;">Being a TOE member isn't just about networking.<br>It also gives you access to a trusted ecosystem of experts who can help you build, market and scale your business — at exclusive member rates.</p>
+            <h3 class="services-sub reveal">Services Available Exclusively to TOE Members</h3>
+            <div class="benefits-grid">
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Complete LinkedIn Growth</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Personal branding, content, profile optimisation, strategic outreach & lead generation — everything you need to make LinkedIn work for your business.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Complete Digital Marketing</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Social media, paid campaigns, content, branding and digital strategy — all under one roof.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Website Design & Development</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Professional, conversion-focused websites built to make your business look credible and bring in opportunities.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">SEO & Search Growth</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Improve your visibility on Google and build long-term organic traffic without depending entirely on paid ads.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Branding & Creative Design</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Logos, brand identity, social media creatives, presentations and everything your brand needs to look sharp.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Performance Marketing</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Meta & Google Ads, campaign strategy and optimisation focused on generating actual leads and business.</p></div>
+                </div>
+                <div class="benefit-pill reveal">
+                    <button class="perk-head" aria-expanded="false"><span class="tick">✓</span><span class="perk-title">Sales & Lead Generation</span><span class="perk-plus">+</span></button>
+                    <div class="perk-body"><p>Build targeted prospect lists, run outreach campaigns and create a consistent pipeline of potential customers.</p></div>
+                </div>
+            </div>
+            <div class="services-best reveal">
+                <p class="services-bestline">And here's the best part.</p>
+                <p>We've collaborated with <strong>30+ specialised vendors, experts & agencies</strong> across these services — all ready to work with TOE members.</p>
+                <div class="services-prices">
+                    <div class="services-price old"><span>Market Price</span><strong>₹100</strong></div>
+                    <div class="services-price new"><span>TOE Member Price</span><strong>₹60–₹70</strong></div>
+                </div>
+                <p>That's <strong>30–40% less</strong> than typical market rates, depending on the service.</p>
+                <p><strong>And no, TOE doesn't take a commission.</strong></p>
+                <p>We simply connect you with the right people, negotiate better rates for our members and help your business grow.</p>
+                <p class="services-close">You focus on building the business.<br>We'll help you find the people who can build everything around it.</p>
+            </div>
         </div>
     </section>
 
@@ -1679,6 +1885,7 @@
         <div class="footer-links">
             <a href="#home">Home</a>
             <a href="#benefits">Benefits</a>
+            <a href="#services">Services</a>
             <a href="#posts">Stories</a>
             <a href="https://chat.whatsapp.com/BTWGEfhYc0MG72Zgt7x3Oe" target="_blank">Join</a>
         </div>
@@ -1862,6 +2069,24 @@
                 }, 100);
             }
         }
+
+        // Perks accordion — one open at a time, keyboard accessible via <button>
+        document.querySelectorAll('.benefits-grid').forEach(grid => {
+            grid.addEventListener('click', (e) => {
+                const head = e.target.closest('.perk-head');
+                if (!head) return;
+                const pill = head.closest('.benefit-pill');
+                const wasOpen = pill.classList.contains('open');
+                grid.querySelectorAll('.benefit-pill.open').forEach(p => {
+                    p.classList.remove('open');
+                    p.querySelector('.perk-head').setAttribute('aria-expanded', 'false');
+                });
+                if (!wasOpen) {
+                    pill.classList.add('open');
+                    head.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
     </script>
     <!-- Dynamic Stories: Firebase (when configured) else local seed. Keep after main script so reveal/tilt helpers exist. -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
