@@ -54,9 +54,9 @@
       ? `<p style="margin-top:8px;font-size:13px;color:var(--gray);font-style:italic;">${escapeHTML(s.signoff)}</p>`
       : '';
     const credits = (s.credits || s.hashtags)
-      ? `<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(26,26,26,0.08);">`
+      ? `<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.10);">`
         + (s.credits ? `<p style="font-size:12px;color:var(--gray);line-height:1.6;"><strong style="color:var(--gray-light);">Credits:</strong><br>${escapeHTML(s.credits).replace(/\n/g, '<br>')}</p>` : '')
-        + (s.hashtags ? `<p style="font-size:11px;color:rgba(26,26,26,0.40);margin-top:10px;letter-spacing:0.5px;">${escapeHTML(s.hashtags)}</p>` : '')
+        + (s.hashtags ? `<p style="font-size:11px;color:rgba(255,255,255,0.40);margin-top:10px;letter-spacing:0.5px;">${escapeHTML(s.hashtags)}</p>` : '')
         + `</div>`
       : '';
 
