@@ -296,6 +296,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transform: translateY(-16px);
         }
 
         .hero-logo-wrap::before {
@@ -642,10 +643,22 @@
             font-weight: 400;
             line-height: 1.8;
             margin: 0 0 10px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.45s ease, transform 0.5s var(--ease-lux);
         }
 
         .perk-body p:last-child {
             margin-bottom: 2px;
+        }
+
+        .benefit-pill.open .perk-body p {
+            opacity: 1;
+            transform: none;
+        }
+
+        .benefit-pill.open .perk-body p:nth-child(2) {
+            transition-delay: 0.08s;
         }
 
         .benefit-pill.open {
@@ -654,7 +667,7 @@
         }
 
         .benefit-pill.open .perk-body {
-            max-height: 420px;
+            max-height: 640px;
             opacity: 1;
             margin-top: 14px;
         }
@@ -2071,6 +2084,11 @@
         }
 
         // Perks accordion — one open at a time, keyboard accessible via <button>
+        // Height is set to the exact content size so the open/close easing runs smoothly
+        const fitPerkBody = (pill, open) => {
+            const body = pill.querySelector('.perk-body');
+            body.style.maxHeight = open ? body.scrollHeight + 'px' : '';
+        };
         document.querySelectorAll('.benefits-grid').forEach(grid => {
             grid.addEventListener('click', (e) => {
                 const head = e.target.closest('.perk-head');
@@ -2080,11 +2098,18 @@
                 grid.querySelectorAll('.benefit-pill.open').forEach(p => {
                     p.classList.remove('open');
                     p.querySelector('.perk-head').setAttribute('aria-expanded', 'false');
+                    fitPerkBody(p, false);
                 });
                 if (!wasOpen) {
                     pill.classList.add('open');
                     head.setAttribute('aria-expanded', 'true');
+                    fitPerkBody(pill, true);
                 }
+            });
+        });
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.benefit-pill.open .perk-body').forEach(body => {
+                body.style.maxHeight = body.scrollHeight + 'px';
             });
         });
     </script>
