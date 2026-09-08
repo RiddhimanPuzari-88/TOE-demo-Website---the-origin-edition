@@ -594,6 +594,28 @@
             margin: 0 auto;
         }
 
+        .benefits-note {
+            max-width: 680px;
+            margin: 36px auto 0;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(18px, 3vw, 22px);
+            line-height: 1.8;
+            background:
+                repeating-linear-gradient(115deg, transparent 0 18px, rgba(255,255,255,0.38) 18px 26px, transparent 26px 44px),
+                linear-gradient(100deg, #C9970D 0%, var(--gold) 35%, #FFE58A 50%, var(--gold) 65%, #C9970D 100%);
+            background-size: auto, 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: noteWave 4s linear infinite;
+        }
+
+        @keyframes noteWave {
+            0% { background-position: 0 0, 0% center; }
+            100% { background-position: 176px 0, 200% center; }
+        }
+
         .benefit-pill {
             position: relative;
             background: #000000;
@@ -650,9 +672,11 @@
             color: #fff;
         }
 
-        .benefit-pill span {
+        .benefit-pill .tick {
+            color: var(--gold-light);
             margin-right: 10px;
-            font-size: 20px;
+            font-size: 16px;
+            font-weight: 800;
         }
 
         @keyframes shimmer {
@@ -1134,31 +1158,43 @@
         }
 
         .founder-btn-linkedin {
-            background: rgba(10, 102, 194, 0.15);
-            border: 1px solid rgba(10, 102, 194, 0.55);
-            color: #6EA8FE;
+            background: #0A66C2;
+            border: 1px solid #0A66C2;
+            color: #FFFFFF;
         }
 
         .founder-btn-linkedin:hover {
-            background: #0A66C2;
-            border-color: #0A66C2;
-            color: #FFFFFF;
             transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(10, 102, 194, 0.35);
+            animation: linkedinGlow 1.6s ease-in-out infinite;
+        }
+
+        @keyframes linkedinGlow {
+            0%, 100% {
+                box-shadow: 0 6px 18px rgba(10, 102, 194, 0.35);
+            }
+            50% {
+                box-shadow: 0 6px 34px rgba(10, 102, 194, 0.65), 0 0 18px rgba(110, 168, 254, 0.45);
+            }
         }
 
         .founder-btn-whatsapp {
-            background: rgba(37, 211, 102, 0.12);
-            border: 1px solid rgba(37, 211, 102, 0.45);
-            color: #4BE484;
+            background: #1EBE5A;
+            border: 1px solid #1EBE5A;
+            color: #FFFFFF;
         }
 
         .founder-btn-whatsapp:hover {
-            background: #1EBE5A;
-            border-color: #1EBE5A;
-            color: #FFFFFF;
             transform: translateY(-2px);
-            box-shadow: 0 10px 28px rgba(37, 211, 102, 0.30);
+            animation: whatsappGlow 1.6s ease-in-out infinite;
+        }
+
+        @keyframes whatsappGlow {
+            0%, 100% {
+                box-shadow: 0 6px 18px rgba(37, 211, 102, 0.30);
+            }
+            50% {
+                box-shadow: 0 6px 34px rgba(37, 211, 102, 0.60), 0 0 18px rgba(75, 228, 132, 0.45);
+            }
         }
 
         /* ===== FOOTER ===== */
@@ -1492,15 +1528,15 @@
             <h2 class="section-title reveal">What You Get</h2>
             <p class="section-desc reveal" style="margin-bottom: 36px;">Join 1,000 serious founders and unlock access to premium benefits -- completely free.</p>
             <div class="benefits-grid">
-                <div class="benefit-pill reveal">Elite Network</div>
-                <div class="benefit-pill reveal">LinkedIn Feature & Cover Page</div>
-                <div class="benefit-pill reveal">Business Opportunities</div>
-                <div class="benefit-pill reveal">Official Website Article</div>
-                <div class="benefit-pill reveal">Tools Access</div>
-                <div class="benefit-pill reveal">META & LinkedIn Branding</div>
-                <div class="benefit-pill reveal">Get Services from Other Founders Within the Same Community at a Discounted Rate</div>
-                <div class="benefit-pill reveal">And Many More...</div>
+                <div class="benefit-pill reveal"><span class="tick">✓</span>Elite Network</div>
+                <div class="benefit-pill reveal"><span class="tick">✓</span>LinkedIn Feature & Cover Page</div>
+                <div class="benefit-pill reveal"><span class="tick">✓</span>Business Opportunities</div>
+                <div class="benefit-pill reveal"><span class="tick">✓</span>Official Website Article</div>
+                <div class="benefit-pill reveal"><span class="tick">✓</span>Tools Access</div>
+                <div class="benefit-pill reveal"><span class="tick">✓</span>META & LinkedIn Branding</div>
+                <div class="benefit-pill reveal"><span class="tick">✓</span>And Many More...</div>
             </div>
+            <p class="benefits-note reveal">Plus exclusive services from other founders within the same community at a discounted price.</p>
         </div>
     </section>
 
